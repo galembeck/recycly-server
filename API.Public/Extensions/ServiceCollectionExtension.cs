@@ -1,9 +1,6 @@
 ﻿using API.Public.Configuration;
-using API.Public.Services;
 using AspNetCoreRateLimit;
 using Domain.Constants;
-using Domain.Services;
-using Domain.Utils.Constants;
 using IoC;
 using Resend;
 
@@ -22,13 +19,11 @@ public static class ServiceCollectionExtensions
         services.AddCoreMemoryCache(configuration);
 
         services.AddHttpContextAccessor();
-        services.AddHttpClient(Constant.Settings.ShippingServiceSettings.ShippingServiceName);
 
         services.ConfigureHangfire(configuration);
         services.ConfigureResend();
         services.ConfigureInjections();
         services.AddSignalR();
-        services.AddScoped<IAdminNotificationService, AdminNotificationService>();
         services.AddAuthorization();
         services.AddResponseCompression();
         services.ConfigureCompression();

@@ -13,10 +13,9 @@ namespace API.Public.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController(IUserService userService, IUserAddressService userAddressService) : _BaseController
+public class UserController(IUserService userService) : _BaseController
 {
     private readonly IUserService _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-    private readonly IUserAddressService _userAddressService = userAddressService ?? throw new ArgumentNullException(nameof(userAddressService));
 
     [HttpPost]
     [AllowAnonymous]
