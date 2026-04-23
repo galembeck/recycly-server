@@ -1,7 +1,6 @@
-﻿using Domain.Data.Entities._Base;
+using Domain.Data.Entities._Base;
 using Domain.Data.Entities._Base.Extension;
 using Domain.Enumerators;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Data.Entities;
@@ -16,10 +15,6 @@ public class Payment : BaseEntity, IBaseEntity<Payment>
 
     public string? OrderId { get; set; }
     public Order? Order { get; set; }
-
-    public long? MercadoPagoPaymentId { get; set; }
-    public string MercadoPagoPaymentMethodId { get; set; }
-    public string PaymentTypeId { get; set; }
 
     public PaymentMethod PaymentMethod { get; set; }
     public PaymentStatus Status { get; set; }
@@ -49,8 +44,6 @@ public class Payment : BaseEntity, IBaseEntity<Payment>
     public string? BoletoUrl { get; set; }
     public string? BoletoBarcode { get; set; }
 
-    public string? RawMercadoPagoResponse { get; set; }
-
 
 
     #region .: METHODS :.
@@ -64,9 +57,6 @@ public class Payment : BaseEntity, IBaseEntity<Payment>
         {
             UserId = entity.UserId,
             OrderId = entity.OrderId,
-            MercadoPagoPaymentId = entity.MercadoPagoPaymentId,
-            MercadoPagoPaymentMethodId = entity.MercadoPagoPaymentMethodId,
-            PaymentTypeId = entity.PaymentTypeId,
             PaymentMethod = entity.PaymentMethod,
             Status = entity.Status,
             TransactionAmount = entity.TransactionAmount,
@@ -86,7 +76,6 @@ public class Payment : BaseEntity, IBaseEntity<Payment>
             PixCopyPaste = entity.PixCopyPaste,
             BoletoUrl = entity.BoletoUrl,
             BoletoBarcode = entity.BoletoBarcode,
-            RawMercadoPagoResponse = entity.RawMercadoPagoResponse
         };
 
         newEntity.InitializeInstance(entity);

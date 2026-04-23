@@ -19,14 +19,6 @@ public class PaymentRepository : BaseRepository<Payment>, IPaymentRepository
             .FirstOrDefaultAsync(p => p.Id == paymentId && p.DeletedAt == null, cancellationToken);
     }
 
-    public async Task<Payment?> GetByMercadoPagoIdAsync(long mercadoPagoPaymentId, CancellationToken cancellationToken = default)
-    {
-        return await _context.Set<Payment>()
-            .Include(p => p.User)
-            .Include(p => p.Order)
-            .FirstOrDefaultAsync(p => p.MercadoPagoPaymentId == mercadoPagoPaymentId, cancellationToken);
-    }
-
     public async Task<List<Payment>> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default)
     {
         return await _context.Set<Payment>()

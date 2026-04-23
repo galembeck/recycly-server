@@ -42,7 +42,7 @@ public class ShippingService : IShippingService
         _httpClient.BaseAddress = new Uri(Constant.Settings.ShippingServiceSettings.ServiceShippingEndpoint);
 
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        _httpClient.DefaultRequestHeaders.Add("User-Agent", "Tallow-API");
+        _httpClient.DefaultRequestHeaders.Add("User-Agent", "Recycly-API");
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _apiToken);
     }
 

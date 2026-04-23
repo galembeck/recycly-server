@@ -24,8 +24,6 @@ public static class ServiceCollectionExtensions
         services.AddHttpContextAccessor();
         services.AddHttpClient(Constant.Settings.ShippingServiceSettings.ShippingServiceName);
 
-        services.AddHttpClient<IMercadoPagoService, MercadoPagoService>();
-
         services.ConfigureHangfire(configuration);
         services.ConfigureResend();
         services.ConfigureInjections();

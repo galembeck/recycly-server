@@ -111,8 +111,6 @@ public static class NativeInjector
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<IPaymentService, PaymentService>();
 
-         services.AddScoped<IMercadoPagoService, MercadoPagoService>();
-
         #endregion .: PAYMENT :.
 
         #region .: EMAIL :.

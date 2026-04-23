@@ -23,7 +23,7 @@ public class SuperFreteCartRequest
     public SuperFreteCartShippingOptions? Options { get; set; }
 
     [JsonPropertyName("platform")]
-    public string? Platform { get; set; } = "Tallow";
+    public string? Platform { get; set; } = "Recycly";
 }
 
 public class SuperFreteCartSenderAddress

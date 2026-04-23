@@ -14,7 +14,7 @@ public class StatusController : _BaseController
     {
         return Ok(new
         {
-            Api = "Tallow - Public API",
+            Api = "Recycly - Public API",
             status = "OK",
             serverTime = StringUtil.GetDateFormated(DateFormatConstants.ISO_8601),
             uptime = (DateTimeOffset.UtcNow - System.Diagnostics.Process.GetCurrentProcess().StartTime.ToUniversalTime()).ToString(@"dd\.hh\:mm\:ss"),
