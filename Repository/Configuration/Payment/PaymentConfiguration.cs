@@ -30,8 +30,5 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
             .WithMany(o => o.Payments)
             .HasForeignKey(p => p.OrderId)
             .OnDelete(DeleteBehavior.SetNull);
-
-        builder.HasIndex(p => p.MercadoPagoPaymentId)
-            .IsUnique();
     }
 }

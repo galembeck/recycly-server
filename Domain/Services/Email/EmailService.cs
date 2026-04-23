@@ -20,7 +20,7 @@ public class EmailService(IResend resend) : IEmailService
         var message = new EmailMessage
         {
             From = From,
-            Subject = "Bem-vindo(a) à Terra & Tallow!"
+            Subject = "Bem-vindo(a) à Recycly!"
         };
         message.To.Add(recipientEmail);
         message.HtmlBody = BuildWelcomeTemplate(recipientName);
@@ -86,7 +86,7 @@ public class EmailService(IResend resend) : IEmailService
         var message = new EmailMessage
         {
             From = From,
-            Subject = "Código de recuperação de senha — Terra & Tallow"
+            Subject = "Código de recuperação de senha — Recycly"
         };
         message.To.Add(recipientEmail);
         message.HtmlBody = BuildPasswordRecoveryTemplate(recipientName, token, expiresAt);
@@ -118,7 +118,7 @@ public class EmailService(IResend resend) : IEmailService
         <head>
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>Terra &amp; Tallow</title>
+          <title>Recycly</title>
         </head>
         <body style="margin:0;padding:0;background:#f5f0eb;font-family:'Segoe UI',Helvetica,Arial,sans-serif;color:#2c2825;">
 
@@ -146,10 +146,10 @@ public class EmailService(IResend resend) : IEmailService
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td style="vertical-align:middle;">
-                  <span style="font-size:20px;font-weight:700;color:#2c2825;letter-spacing:0.5px;">Terra &amp; Tallow</span>
+                  <span style="font-size:20px;font-weight:700;color:#2c2825;letter-spacing:0.5px;">Recycly</span>
                 </td>
                 <td style="text-align:right;vertical-align:middle;font-size:12px;color:#5a4f47;line-height:1.8;">
-                  <span style="color:#c8a97e;font-weight:600;">terraetallow.com.br</span><br>
+                  <span style="color:#c8a97e;font-weight:600;">recycly.com.br</span><br>
                   Telefone: (11) XXXXX-XXXX
                 </td>
               </tr>
@@ -164,7 +164,7 @@ public class EmailService(IResend resend) : IEmailService
             <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:0 0 8px 8px;overflow:hidden;">
               <tr>
                 <td style="background:#2c2825;padding:24px 32px;text-align:center;">
-                  <p style="margin:0 0 4px;color:#f5ebe0;font-size:15px;font-weight:600;letter-spacing:0.5px;">Terra &amp; Tallow</p>
+                  <p style="margin:0 0 4px;color:#f5ebe0;font-size:15px;font-weight:600;letter-spacing:0.5px;">Recycly</p>
                   <p style="margin:0 0 2px;color:#c8a97e;font-size:12px;">Alameda Conde de Porto Alegre, 1137 — Santa Maria</p>
                   <p style="margin:0 0 12px;color:#c8a97e;font-size:12px;">São Caetano do Sul — SP, 09561-000</p>
                   <p style="margin:0;color:#8a7b72;font-size:11px;">Você está recebendo este e-mail porque realizou uma ação em nossa loja.</p>
@@ -465,7 +465,7 @@ public class EmailService(IResend resend) : IEmailService
                 <table width="100%" cellpadding="0" cellspacing="0">
                   <tr>
                     <td style="background:#2c2825;padding:32px;text-align:center;">
-                      <p style="margin:0 0 6px;font-size:22px;font-weight:700;color:#f5ebe0;letter-spacing:1px;">Terra &amp; Tallow</p>
+                      <p style="margin:0 0 6px;font-size:22px;font-weight:700;color:#f5ebe0;letter-spacing:1px;">Recycly</p>
                       <p style="margin:0;font-size:12px;color:#c8a97e;letter-spacing:3px;text-transform:uppercase;">Cuidado com inten&#231;&#227;o</p>
                     </td>
                   </tr>
@@ -475,7 +475,7 @@ public class EmailService(IResend resend) : IEmailService
                     <td style="padding:36px 40px;">
                       <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#2c2825;">Ol&#225;, {name}! 🌿</p>
                       <p style="margin:0 0 14px;font-size:15px;line-height:1.7;color:#5a4f47;">
-                        Seja muito bem-vindo(a) &#224; <strong>Terra &amp; Tallow</strong>. Estamos muito felizes em t&#234;-lo(a) aqui!
+                        Seja muito bem-vindo(a) &#224; <strong>Recycly</strong>. Estamos muito felizes em t&#234;-lo(a) aqui!
                       </p>
                       <p style="margin:0 0 24px;font-size:15px;line-height:1.7;color:#5a4f47;">
                         Nossa loja foi criada com o prop&#243;sito de levar produtos naturais e artesanais de qualidade at&#233; voc&#234;.
@@ -770,7 +770,7 @@ public class EmailService(IResend resend) : IEmailService
             """;
 
         return WrapLayout(
-            "Seu código de recuperação de senha Terra & Tallow está disponível.",
+            "Seu código de recuperação de senha Recycly está disponível.",
             body);
     }
 }

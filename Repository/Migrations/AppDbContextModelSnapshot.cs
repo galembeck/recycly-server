@@ -466,22 +466,11 @@ namespace Repository.Migrations
                     b.Property<bool?>("LiveMode")
                         .HasColumnType("bit");
 
-                    b.Property<long?>("MercadoPagoPaymentId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("MercadoPagoPaymentMethodId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("OrderId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("int");
-
-                    b.Property<string>("PaymentTypeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PixCopyPaste")
                         .HasColumnType("nvarchar(max)");
@@ -490,9 +479,6 @@ namespace Repository.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PixQrCodeBase64")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RawMercadoPagoResponse")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("ShippingAmount")
@@ -523,10 +509,6 @@ namespace Repository.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MercadoPagoPaymentId")
-                        .IsUnique()
-                        .HasFilter("[MercadoPagoPaymentId] IS NOT NULL");
 
                     b.HasIndex("OrderId");
 
