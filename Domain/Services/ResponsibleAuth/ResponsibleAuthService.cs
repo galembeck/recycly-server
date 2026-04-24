@@ -3,7 +3,8 @@ using Domain.Data.Entities;
 using Domain.Data.Models.Auth;
 using Domain.Enumerators;
 using Domain.Exceptions;
-using Domain.Repository.Responsible;
+using Domain.Repository;
+using Domain.Repository.User;
 using Domain.Utils;
 using Hangfire;
 
@@ -11,18 +12,18 @@ namespace Domain.Services.ResponsibleAuth;
 
 public class ResponsibleAuthService : IResponsibleAuthService
 {
-    private readonly IResponsibleRepository _responsibleRepository;
-    private readonly IResponsibleAccessTokenRepository _accessTokenRepository;
-    private readonly IResponsibleRefreshTokenRepository _refreshTokenRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly IAccessTokenRepository _accessTokenRepository;
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly IBackgroundJobClient _backgroundJobClient;
 
     public ResponsibleAuthService(
-        IResponsibleRepository responsibleRepository,
-        IResponsibleAccessTokenRepository accessTokenRepository,
-        IResponsibleRefreshTokenRepository refreshTokenRepository,
+        IUserRepository userRepository,
+        IAccessTokenRepository accessTokenRepository,
+        IRefreshTokenRepository refreshTokenRepository,
         IBackgroundJobClient backgroundJobClient)
     {
-        _responsibleRepository = responsibleRepository;
+        _userRepository = userRepository;
         _accessTokenRepository = accessTokenRepository;
         _refreshTokenRepository = refreshTokenRepository;
         _backgroundJobClient = backgroundJobClient;
@@ -30,42 +31,43 @@ public class ResponsibleAuthService : IResponsibleAuthService
 
     public async Task<Tokens> RegisterAsync(string name, string email, string cpf, string password, DateOnly birthDate, List<string> phones, CancellationToken cancellationToken = default)
     {
-        if (await _responsibleRepository.GetByEmailAsync(email, cancellationToken) is not null)
+        if (await _userRepository.GetByEmailAsync(email, cancellationToken) is not null)
             throw new BusinessException(BusinessErrorMessage.RESPONSIBLE_WITH_REPEAT_REGISTRATION_EMAIL);
 
-        if (await _responsibleRepository.GetByCpfAsync(cpf, cancellationToken) is not null)
+        if (await _userRepository.GetByDocumentAsync(cpf, cancellationToken) is not null)
             throw new BusinessException(BusinessErrorMessage.RESPONSIBLE_WITH_REPEAT_REGISTRATION_CPF);
 
-        var responsible = new Responsible
+        var user = new User
         {
             Name = name,
             Email = email,
-            Cpf = cpf,
+            Document = cpf,
             Password = StringUtil.SHA512(password),
             BirthDate = birthDate,
             Phones = phones,
+            Cellphone = phones.FirstOrDefault() ?? string.Empty,
         };
 
-        var saved = await _responsibleRepository.InsertAsync(responsible);
+        var saved = await _userRepository.InsertAsync(user);
 
         return await GenerateTokensAsync(saved.Id);
     }
 
     public async Task<Tokens> AuthenticateAsync(string email, string password, CancellationToken cancellationToken = default)
     {
-        var responsible = await _responsibleRepository.GetByEmailAsync(email, cancellationToken);
+        var user = await _userRepository.GetByEmailAsync(email, cancellationToken);
 
-        if (responsible is null)
+        if (user is null)
             throw new BusinessException(BusinessErrorMessage.RESPONSIBLE_NOT_FOUND);
 
-        if (responsible.Password != StringUtil.SHA512(password))
+        if (user.Password != StringUtil.SHA512(password))
             throw new BusinessException(BusinessErrorMessage.RESPONSIBLE_NOT_FOUND_OR_INVALID_PASSWORD);
 
-        var tokens = await GenerateTokensAsync(responsible.Id);
+        var tokens = await GenerateTokensAsync(user.Id);
 
-        await _responsibleRepository.UpdatePartialAsync(
-            new Responsible { Id = responsible.Id },
-            r => r.LastAccessAt = DateTimeOffset.UtcNow);
+        await _userRepository.UpdatePartialAsync(
+            new User { Id = user.Id },
+            u => u.LastAccessAt = DateTimeOffset.UtcNow);
 
         return tokens;
     }
@@ -76,30 +78,30 @@ public class ResponsibleAuthService : IResponsibleAuthService
         if (refresh is null)
             throw new AuthenticationException(AuthenticationErrorMessage.UNAUTHORIZED);
 
-        var responsible = await _responsibleRepository.GetAsync(refresh.ResponsibleId, cancellationToken);
-        if (responsible is null)
+        var user = await _userRepository.GetAsync(refresh.UserId, cancellationToken);
+        if (user is null)
             throw new AuthenticationException(AuthenticationErrorMessage.UNAUTHORIZED);
 
         if (refresh.ExpiresAt < DateTimeOffset.UtcNow)
             throw new AuthenticationException(AuthenticationErrorMessage.TOKEN_EXPIRED);
 
-        var tokens = await GenerateTokensAsync(refresh.ResponsibleId);
+        var tokens = await GenerateTokensAsync(refresh.UserId);
 
-        await _responsibleRepository.UpdatePartialAsync(
-            new Responsible { Id = responsible.Id },
-            r => r.LastAccessAt = DateTimeOffset.UtcNow);
+        await _userRepository.UpdatePartialAsync(
+            new User { Id = user.Id },
+            u => u.LastAccessAt = DateTimeOffset.UtcNow);
 
         return tokens;
     }
 
-    public async Task<Tokens> RevokeAsync(string accessTokenId, string refreshTokenId, Responsible actor, CancellationToken cancellationToken = default)
+    public async Task<Tokens> RevokeAsync(string accessTokenId, string refreshTokenId, User actor, CancellationToken cancellationToken = default)
     {
-        var accessToken = await _accessTokenRepository.GetByTokenAsync(accessTokenId, cancellationToken);
+        var accessToken = await _accessTokenRepository.GetByToken(accessTokenId, cancellationToken);
         if (accessToken is null)
             throw new AuthenticationException(AuthenticationErrorMessage.ACCESSTOKEN_NOT_FOUND);
 
         _ = await _accessTokenRepository.UpdatePartialAsync(
-            new ResponsibleAccessToken { Id = accessToken.Id },
+            new AccessToken { Id = accessToken.Id },
             at =>
             {
                 at.UpdatedBy = actor.Id;
@@ -129,62 +131,62 @@ public class ResponsibleAuthService : IResponsibleAuthService
 
     public async Task SendPasswordRecoveryAsync(string email, CancellationToken cancellationToken = default)
     {
-        var responsible = await _responsibleRepository.GetByEmailAsync(email, cancellationToken);
+        var user = await _userRepository.GetByEmailAsync(email, cancellationToken);
 
-        if (responsible is null)
+        if (user is null)
             return;
 
         var token     = StringUtil.GenerateRandom(Constant.Settings.AuthSettings.RecoveryPasswordLength).ToUpper();
         var expiresAt = DateTimeOffset.UtcNow.AddMinutes(Constant.Settings.AuthSettings.RecoveryPasswordExpiration);
 
-        await _responsibleRepository.UpdatePartialAsync(
-            new Responsible { Id = responsible.Id },
-            r =>
+        await _userRepository.UpdatePartialAsync(
+            new User { Id = user.Id },
+            u =>
             {
-                r.PasswordChangeToken          = token;
-                r.PasswordChangeTokenExpiresAt = expiresAt;
+                u.PasswordChangeToken          = token;
+                u.PasswordChangeTokenExpiresAt = expiresAt;
             });
 
         _backgroundJobClient.Enqueue<IEmailService>(s =>
-            s.SendPasswordRecoveryEmailAsync(responsible.Name, responsible.Email, token, expiresAt.UtcDateTime));
+            s.SendPasswordRecoveryEmailAsync(user.Name, user.Email, token, expiresAt.UtcDateTime));
     }
 
     public async Task<bool> VerifyPasswordRecoveryTokenAsync(string email, string token, CancellationToken cancellationToken = default)
     {
-        var responsible = await _responsibleRepository.GetByEmailAndTokenAsync(email, token, cancellationToken);
-        return responsible is not null;
+        var user = await _userRepository.GetByEmailAndTokenAsync(email, token, cancellationToken);
+        return user is not null;
     }
 
     public async Task ResetPasswordAsync(string email, string token, string newPassword, CancellationToken cancellationToken = default)
     {
-        var responsible = await _responsibleRepository.GetByEmailAndTokenAsync(email, token, cancellationToken);
+        var user = await _userRepository.GetByEmailAndTokenAsync(email, token, cancellationToken);
 
-        if (responsible is null)
+        if (user is null)
             throw new BusinessException(BusinessErrorMessage.INVALID_DOCUMENT_OR_RECOVERY_PASSWORD_TOKEN);
 
-        await _responsibleRepository.UpdatePartialAsync(
-            new Responsible { Id = responsible.Id },
-            r =>
+        await _userRepository.UpdatePartialAsync(
+            new User { Id = user.Id },
+            u =>
             {
-                r.Password                     = StringUtil.SHA512(newPassword);
-                r.PasswordChangeToken          = null;
-                r.PasswordChangeTokenExpiresAt = null;
+                u.Password                     = StringUtil.SHA512(newPassword);
+                u.PasswordChangeToken          = null;
+                u.PasswordChangeTokenExpiresAt = null;
             });
     }
 
     #region .: PRIVATE METHODS :.
 
-    private async Task<Tokens> GenerateTokensAsync(string responsibleId)
+    private async Task<Tokens> GenerateTokensAsync(string userId)
     {
-        var accessToken = await _accessTokenRepository.InsertAsync(new ResponsibleAccessToken
+        var accessToken = await _accessTokenRepository.InsertAsync(new AccessToken
         {
-            ResponsibleId = responsibleId,
+            UserId = userId,
             ExpiresAt = DateTimeOffset.UtcNow.AddHours(Constant.Settings.AuthSettings.AccessTokenExpiration),
         });
 
-        var refreshToken = await _refreshTokenRepository.InsertAsync(new ResponsibleRefreshToken
+        var refreshToken = await _refreshTokenRepository.InsertAsync(new RefreshToken
         {
-            ResponsibleId = responsibleId,
+            UserId = userId,
             ExpiresAt = DateTimeOffset.UtcNow.AddHours(Constant.Settings.AuthSettings.RefreshTokenExpiration),
         });
 

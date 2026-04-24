@@ -63,31 +63,6 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TBResponsible",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Cpf = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BirthDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    Phones = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastAccessAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    PasswordChangeToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PasswordChangeTokenExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TBResponsible", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TBUser",
                 columns: table => new
                 {
@@ -103,6 +78,8 @@ namespace Repository.Migrations
                     AvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AvatarPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastAccessAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    Phones = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PasswordChangeToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PasswordChangeTokenExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -145,54 +122,6 @@ namespace Repository.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TBUserHistoric", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TBResponsibleAccessToken",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ResponsibleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TBResponsibleAccessToken", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TBResponsibleAccessToken_T~",
-                        column: x => x.ResponsibleId,
-                        principalTable: "TBResponsible",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TBResponsibleRefreshToken",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ResponsibleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TBResponsibleRefreshToken", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TBResponsibleRefreshToken_~",
-                        column: x => x.ResponsibleId,
-                        principalTable: "TBResponsible",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -621,28 +550,6 @@ namespace Repository.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TBResponsible_Cpf",
-                table: "TBResponsible",
-                column: "Cpf",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TBResponsible_Email",
-                table: "TBResponsible",
-                column: "Email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TBResponsibleAccessToken_R~",
-                table: "TBResponsibleAccessToken",
-                column: "ResponsibleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TBResponsibleRefreshToken_~",
-                table: "TBResponsibleRefreshToken",
-                column: "ResponsibleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TBUserAddress_UserId",
                 table: "TBUserAddress",
                 column: "UserId");
@@ -685,12 +592,6 @@ namespace Repository.Migrations
                 name: "TBRefreshToken");
 
             migrationBuilder.DropTable(
-                name: "TBResponsibleAccessToken");
-
-            migrationBuilder.DropTable(
-                name: "TBResponsibleRefreshToken");
-
-            migrationBuilder.DropTable(
                 name: "TBUserAddress");
 
             migrationBuilder.DropTable(
@@ -707,9 +608,6 @@ namespace Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "TBPayment");
-
-            migrationBuilder.DropTable(
-                name: "TBResponsible");
 
             migrationBuilder.DropTable(
                 name: "TBProduct");

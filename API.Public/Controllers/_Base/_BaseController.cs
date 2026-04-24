@@ -108,42 +108,4 @@ public class _BaseController : ControllerBase
         }
     }
 
-    protected void GenerateResponsibleAuthCookie(Tokens model)
-    {
-        if (_httpContextAccessor?.HttpContext?.Response?.Cookies != null)
-        {
-            _httpContextAccessor.HttpContext.Response.Cookies.Append(
-                "Responsible_AccessToken",
-                model.AccessToken,
-                new CookieOptions
-                {
-                    Expires = model.AccessTokenExpiresAt,
-                    HttpOnly = true,
-                    Secure = true,
-                    Domain = Constant.Settings.Domain
-                }
-            );
-
-            _httpContextAccessor.HttpContext.Response.Cookies.Append(
-                "Responsible_RefreshToken",
-                model.RefreshToken,
-                new CookieOptions
-                {
-                    Expires = model.RefreshTokenExpiresAt,
-                    HttpOnly = true,
-                    Secure = true,
-                    Domain = Constant.Settings.Domain
-                }
-            );
-        }
-    }
-
-    protected void RemoveResponsibleAuthCookie()
-    {
-        if (_httpContextAccessor?.HttpContext?.Response?.Cookies != null)
-        {
-            _httpContextAccessor.HttpContext.Response.Cookies.Delete("Responsible_AccessToken");
-            _httpContextAccessor.HttpContext.Response.Cookies.Delete("Responsible_RefreshToken");
-        }
-    }
 }

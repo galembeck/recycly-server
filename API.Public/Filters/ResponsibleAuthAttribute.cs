@@ -2,7 +2,8 @@ using API.Public.Resources;
 using Domain.Data.Entities;
 using Domain.Enumerators;
 using Domain.Exceptions;
-using Domain.Repository.Responsible;
+using Domain.Repository;
+using Domain.Repository.User;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace API.Public.Filters;
@@ -14,24 +15,24 @@ public class ResponsibleAuthAttribute : ActionFilterAttribute
         var httpContext = context.HttpContext;
         var req = httpContext.Request;
 
-        var token = req.Cookies["Responsible_AccessToken"];
+        var token = req.Cookies["AccessToken"];
 
         if (string.IsNullOrEmpty(token))
             throw new AuthenticationException(AuthenticationErrorMessage.UNAUTHORIZED);
 
-        IResponsibleAccessTokenRepository accessTokenRepository = httpContext.RequestServices
-            .GetRequiredService<IResponsibleAccessTokenRepository>()
-            ?? throw new ArgumentNullException(nameof(accessTokenRepository), "IResponsibleAccessTokenRepository is not registered");
+        IAccessTokenRepository accessTokenRepository = httpContext.RequestServices
+            .GetRequiredService<IAccessTokenRepository>()
+            ?? throw new ArgumentNullException(nameof(accessTokenRepository));
 
-        IResponsibleRepository responsibleRepository = httpContext.RequestServices
-            .GetRequiredService<IResponsibleRepository>()
-            ?? throw new ArgumentNullException(nameof(responsibleRepository), "IResponsibleRepository is not registered");
+        IUserRepository userRepository = httpContext.RequestServices
+            .GetRequiredService<IUserRepository>()
+            ?? throw new ArgumentNullException(nameof(userRepository));
 
-        ResponsibleAccessToken? accessToken;
+        AccessToken? accessToken;
 
         try
         {
-            accessToken = await accessTokenRepository.GetByTokenAsync(token);
+            accessToken = await accessTokenRepository.GetAsync(token);
         }
         catch (PersistenceException)
         {
@@ -44,12 +45,12 @@ public class ResponsibleAuthAttribute : ActionFilterAttribute
         if (accessToken.ExpiresAt < DateTimeOffset.UtcNow)
             throw new AuthenticationException(AuthenticationErrorMessage.TOKEN_EXPIRED);
 
-        Domain.Data.Entities.Responsible? responsible = await responsibleRepository.GetAsync(accessToken.ResponsibleId);
+        User? user = await userRepository.GetAsync(accessToken.UserId);
 
-        if (responsible is null)
+        if (user is null)
             throw new AuthenticationException(AuthenticationErrorMessage.UNAUTHORIZED);
         else
-            IdentityResources.AddResponsibleOnThread(responsible);
+            IdentityResources.AddUserOnThread(user);
 
         await next();
     }

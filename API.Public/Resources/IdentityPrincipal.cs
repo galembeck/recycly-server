@@ -1,4 +1,4 @@
-﻿using Domain.Data.Entities;
+using Domain.Data.Entities;
 using System.Security.Principal;
 
 namespace API.Public.Resources;
@@ -6,19 +6,12 @@ namespace API.Public.Resources;
 public class IdentityPrincipal : IPrincipal
 {
     public User? User { get; }
-    public Responsible? Responsible { get; }
     public IIdentity Identity { get; }
 
     public IdentityPrincipal(IIdentity identity, User user)
     {
         Identity = identity;
         User = user;
-    }
-
-    public IdentityPrincipal(IIdentity identity, Responsible responsible)
-    {
-        Identity = identity;
-        Responsible = responsible;
     }
 
     public bool IsInRole(string role) => true;

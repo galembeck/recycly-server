@@ -5,8 +5,8 @@ using API.Public.DTOs.Responsible;
 using API.Public.Filters;
 using API.Public.Validators;
 using API.Public.Validators.Responsible;
-using Domain.Exceptions;
 using Domain.Enumerators;
+using Domain.Exceptions;
 using Domain.Services.ResponsibleAuth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +37,7 @@ public class ResponsibleAuthController : _BaseController
         var tokens = await _responsibleAuthService.RegisterAsync(
             body.Name, body.Email, body.Cpf, body.Password, body.BirthDate, body.Phones, cancellationToken);
 
-        GenerateResponsibleAuthCookie(tokens);
+        GenerateAuthCookie(tokens);
 
         return Ok(AuthResponseDTO.ModelToDTO(tokens));
     }
@@ -52,7 +52,7 @@ public class ResponsibleAuthController : _BaseController
 
         var tokens = await _responsibleAuthService.AuthenticateAsync(body.Email, body.Password, cancellationToken);
 
-        GenerateResponsibleAuthCookie(tokens);
+        GenerateAuthCookie(tokens);
 
         return Ok(AuthResponseDTO.ModelToDTO(tokens));
     }
@@ -61,14 +61,14 @@ public class ResponsibleAuthController : _BaseController
     [AllowAnonymous]
     public async Task<IActionResult> RefreshToken(CancellationToken cancellationToken = default)
     {
-        var refreshToken = Request.Cookies["Responsible_RefreshToken"];
+        var refreshToken = Request.Cookies["RefreshToken"];
 
         if (string.IsNullOrEmpty(refreshToken))
             throw new AuthenticationException(AuthenticationErrorMessage.UNAUTHORIZED);
 
         var tokens = await _responsibleAuthService.RefreshAsync(refreshToken, cancellationToken);
 
-        GenerateResponsibleAuthCookie(tokens);
+        GenerateAuthCookie(tokens);
 
         return Ok(AuthResponseDTO.ModelToDTO(tokens));
     }
@@ -77,15 +77,15 @@ public class ResponsibleAuthController : _BaseController
     [HttpPost("revoke")]
     public async Task<IActionResult> RevokeAccessToken(CancellationToken cancellationToken = default)
     {
-        var accessToken = Request.Cookies["Responsible_AccessToken"];
-        var refreshToken = Request.Cookies["Responsible_RefreshToken"];
+        var accessToken = Request.Cookies["AccessToken"];
+        var refreshToken = Request.Cookies["RefreshToken"];
 
         if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
             throw new AuthenticationException(AuthenticationErrorMessage.UNAUTHORIZED);
 
-        await _responsibleAuthService.RevokeAsync(accessToken, refreshToken, Authenticated.Responsible, cancellationToken);
+        await _responsibleAuthService.RevokeAsync(accessToken, refreshToken, Authenticated.User, cancellationToken);
 
-        RemoveResponsibleAuthCookie();
+        RemoveAuthCookie(null);
 
         return Ok();
     }

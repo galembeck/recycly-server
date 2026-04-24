@@ -1,7 +1,6 @@
-﻿using Domain.Data.Entities;
+using Domain.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Repository.Configuration;
-using Repository.Configuration.Responsible;
 using Repository.Configurations;
 
 namespace Repository;
@@ -24,9 +23,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<WishlistItem> WishlistItems { get; set; }
     public DbSet<Coupon> Coupons { get; set; }
     public DbSet<GiftCard> GiftCards { get; set; }
-    public DbSet<Domain.Data.Entities.Responsible> Responsibles { get; set; }
-    public DbSet<ResponsibleAccessToken> ResponsibleAccessTokens { get; set; }
-    public DbSet<ResponsibleRefreshToken> ResponsibleRefreshTokens { get; set; }
 
     #endregion .: ENTITIES :.
 
@@ -43,7 +39,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.ApplyConfiguration(new OrderConfiguration());
         modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
         modelBuilder.ApplyConfiguration(new PaymentConfiguration());
-        modelBuilder.ApplyConfiguration(new ResponsibleConfiguration());
 
         #endregion .: CONFIGURATION :.
 

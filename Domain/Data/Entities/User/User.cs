@@ -34,6 +34,11 @@ public class User : BaseEntity, IBaseEntity<User>
 
 
 
+    public DateOnly? BirthDate { get; set; }
+    public List<string>? Phones { get; set; }
+
+
+
     public string? PasswordChangeToken { get; set; }
     public DateTimeOffset? PasswordChangeTokenExpiresAt { get; set; }
 
@@ -69,6 +74,9 @@ public class User : BaseEntity, IBaseEntity<User>
 
             LastAccessAt = entity.LastAccessAt,
             
+            BirthDate = entity.BirthDate,
+            Phones = entity.Phones,
+
             PasswordChangeToken = entity.PasswordChangeToken,
             PasswordChangeTokenExpiresAt = entity.PasswordChangeTokenExpiresAt,
             HashId = entity.HashId,

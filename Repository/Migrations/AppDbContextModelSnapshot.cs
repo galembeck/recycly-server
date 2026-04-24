@@ -626,143 +626,6 @@ namespace Repository.Migrations
                     b.ToTable("TBRefreshToken");
                 });
 
-            modelBuilder.Entity("Domain.Data.Entities.Responsible", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateOnly>("BirthDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Cpf")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset?>("LastAccessAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordChangeToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("PasswordChangeTokenExpiresAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Phones")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Cpf")
-                        .IsUnique();
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.ToTable("TBResponsible", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Data.Entities.ResponsibleAccessToken", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset?>("ExpiresAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("ResponsibleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ResponsibleId");
-
-                    b.ToTable("TBResponsibleAccessToken");
-                });
-
-            modelBuilder.Entity("Domain.Data.Entities.ResponsibleRefreshToken", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset?>("ExpiresAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("ResponsibleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ResponsibleId");
-
-                    b.ToTable("TBResponsibleRefreshToken");
-                });
-
             modelBuilder.Entity("Domain.Data.Entities.User", b =>
                 {
                     b.Property<string>("Id")
@@ -773,6 +636,9 @@ namespace Repository.Migrations
 
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly?>("BirthDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Cellphone")
                         .IsRequired()
@@ -812,6 +678,9 @@ namespace Repository.Migrations
 
                     b.Property<DateTimeOffset?>("PasswordChangeTokenExpiresAt")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Phones")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ProfileType")
                         .HasColumnType("int");
@@ -1196,28 +1065,6 @@ namespace Repository.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Data.Entities.ResponsibleAccessToken", b =>
-                {
-                    b.HasOne("Domain.Data.Entities.Responsible", "Responsible")
-                        .WithMany()
-                        .HasForeignKey("ResponsibleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Responsible");
-                });
-
-            modelBuilder.Entity("Domain.Data.Entities.ResponsibleRefreshToken", b =>
-                {
-                    b.HasOne("Domain.Data.Entities.Responsible", "Responsible")
-                        .WithMany()
-                        .HasForeignKey("ResponsibleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Responsible");
                 });
 
             modelBuilder.Entity("Domain.Data.Entities.UserAddress", b =>

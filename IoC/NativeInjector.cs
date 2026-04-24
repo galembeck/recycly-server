@@ -1,11 +1,9 @@
-﻿using Domain.Repository;
-using Domain.Repository.Responsible;
+using Domain.Repository;
 using Domain.Repository.User;
 using Domain.Services;
 using Domain.Services.ResponsibleAuth;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.Repository;
-using Repository.Repository.Responsible;
 using Repository.Repository.User;
 using IWishlistRepository = Domain.Repository.IWishlistRepository;
 using WishlistRepository = Repository.Repository.WishlistRepository;
@@ -43,17 +41,9 @@ public static class NativeInjector
         #region .: AUTH :.
 
         services.AddScoped<IAuthService, AuthService>();
-
-        #endregion .: AUTH :.
-
-        #region .: RESPONSIBLE AUTH :.
-
-        services.AddScoped<IResponsibleRepository, ResponsibleRepository>();
-        services.AddScoped<IResponsibleAccessTokenRepository, ResponsibleAccessTokenRepository>();
-        services.AddScoped<IResponsibleRefreshTokenRepository, ResponsibleRefreshTokenRepository>();
         services.AddScoped<IResponsibleAuthService, ResponsibleAuthService>();
 
-        #endregion .: RESPONSIBLE AUTH :.
+        #endregion .: AUTH :.
 
         #region .: TOKENS :.
 
@@ -85,7 +75,7 @@ public static class NativeInjector
 
         services.AddScoped<ICartRepository, CartRepository>();
         services.AddScoped<ICartService, CartService>();
-        
+
         services.AddScoped<ICartItemRepository, CartItemRepository>();
 
         #endregion .: CART :.
