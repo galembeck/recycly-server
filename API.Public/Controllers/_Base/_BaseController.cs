@@ -107,4 +107,43 @@ public class _BaseController : ControllerBase
             _httpContextAccessor.HttpContext.Response.Cookies.Delete("RefreshToken");
         }
     }
+
+    protected void GenerateCooperativeAuthCookie(Tokens model)
+    {
+        if (_httpContextAccessor?.HttpContext?.Response?.Cookies != null)
+        {
+            _httpContextAccessor.HttpContext.Response.Cookies.Append(
+                "Cooperative_AccessToken",
+                model.AccessToken,
+                new CookieOptions
+                {
+                    Expires = model.AccessTokenExpiresAt,
+                    HttpOnly = true,
+                    Secure = true,
+                    Domain = Constant.Settings.Domain
+                }
+            );
+
+            _httpContextAccessor.HttpContext.Response.Cookies.Append(
+                "Cooperative_RefreshToken",
+                model.RefreshToken,
+                new CookieOptions
+                {
+                    Expires = model.RefreshTokenExpiresAt,
+                    HttpOnly = true,
+                    Secure = true,
+                    Domain = Constant.Settings.Domain
+                }
+            );
+        }
+    }
+
+    protected void RemoveCooperativeAuthCookie()
+    {
+        if (_httpContextAccessor?.HttpContext?.Response?.Cookies != null)
+        {
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete("Cooperative_AccessToken");
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete("Cooperative_RefreshToken");
+        }
+    }
 }

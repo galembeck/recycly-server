@@ -1,8 +1,11 @@
 ﻿using Domain.Repository;
+using Domain.Repository.Cooperative;
 using Domain.Repository.User;
 using Domain.Services;
+using Domain.Services.CooperativeAuth;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.Repository;
+using Repository.Repository.Cooperative;
 using Repository.Repository.User;
 using IWishlistRepository = Domain.Repository.IWishlistRepository;
 using WishlistRepository = Repository.Repository.WishlistRepository;
@@ -42,6 +45,15 @@ public static class NativeInjector
         services.AddScoped<IAuthService, AuthService>();
 
         #endregion .: AUTH :.
+
+        #region .: COOPERATIVE AUTH :.
+
+        services.AddScoped<ICooperativeRepository, CooperativeRepository>();
+        services.AddScoped<ICooperativeAccessTokenRepository, CooperativeAccessTokenRepository>();
+        services.AddScoped<ICooperativeRefreshTokenRepository, CooperativeRefreshTokenRepository>();
+        services.AddScoped<ICooperativeAuthService, CooperativeAuthService>();
+
+        #endregion .: COOPERATIVE AUTH :.
 
         #region .: TOKENS :.
 

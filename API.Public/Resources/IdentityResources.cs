@@ -13,4 +13,13 @@ public static class IdentityResources
 
         Thread.CurrentPrincipal = principal;
     }
+
+    public static void AddCooperativeOnThread(Cooperative cooperative)
+    {
+        var claims = new List<Claim>();
+        var identity = new ClaimsIdentity(claims, "CooperativeAuth", "Id", ClaimTypes.Role);
+        var principal = new IdentityPrincipal(identity, cooperative);
+
+        Thread.CurrentPrincipal = principal;
+    }
 }
