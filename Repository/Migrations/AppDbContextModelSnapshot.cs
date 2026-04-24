@@ -637,6 +637,9 @@ namespace Repository.Migrations
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateOnly?>("BirthDate")
+                        .HasColumnType("date");
+
                     b.Property<string>("Cellphone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -675,6 +678,9 @@ namespace Repository.Migrations
 
                     b.Property<DateTimeOffset?>("PasswordChangeTokenExpiresAt")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Phones")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ProfileType")
                         .HasColumnType("int");

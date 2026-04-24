@@ -90,4 +90,5 @@ public enum BusinessErrorMessage
 
     [EnumDescription("ADDRESS_NOT_FOUND")]
     ADDRESS_NOT_FOUND = 28,
+
 }

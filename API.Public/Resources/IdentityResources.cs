@@ -1,4 +1,4 @@
-﻿using Domain.Data.Entities;
+using Domain.Data.Entities;
 using System.Security.Claims;
 
 namespace API.Public.Resources;

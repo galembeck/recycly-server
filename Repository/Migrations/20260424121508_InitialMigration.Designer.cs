@@ -12,7 +12,7 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260423201756_InitialMigration")]
+    [Migration("20260424121508_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -640,6 +640,9 @@ namespace Repository.Migrations
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateOnly?>("BirthDate")
+                        .HasColumnType("date");
+
                     b.Property<string>("Cellphone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -678,6 +681,9 @@ namespace Repository.Migrations
 
                     b.Property<DateTimeOffset?>("PasswordChangeTokenExpiresAt")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Phones")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ProfileType")
                         .HasColumnType("int");

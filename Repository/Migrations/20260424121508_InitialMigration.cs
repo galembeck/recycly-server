@@ -78,6 +78,8 @@ namespace Repository.Migrations
                     AvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AvatarPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastAccessAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    Phones = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PasswordChangeToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PasswordChangeTokenExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
