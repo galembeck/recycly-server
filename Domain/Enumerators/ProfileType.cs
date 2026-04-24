@@ -4,7 +4,7 @@ namespace Domain.Enumerators;
 
 public enum ProfileType
 {
-    [EnumDescription("CPFL_ADMIN")]
+    [EnumDescription("ADMIN")]
     ADMIN = 1,
 
     [EnumDescription("CLIENT")]
