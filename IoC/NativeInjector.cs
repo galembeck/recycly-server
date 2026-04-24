@@ -1,7 +1,6 @@
 using Domain.Repository;
 using Domain.Repository.User;
 using Domain.Services;
-using Domain.Services.ResponsibleAuth;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.Repository;
 using Repository.Repository.User;
@@ -41,7 +40,6 @@ public static class NativeInjector
         #region .: AUTH :.
 
         services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IResponsibleAuthService, ResponsibleAuthService>();
 
         #endregion .: AUTH :.
 

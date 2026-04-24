@@ -38,6 +38,30 @@ public class AuthService : IAuthService
         _userService = userService;
     }
 
+    public async Task<Tokens> RegisterAsync(string name, string email, string cpf, string password, DateOnly birthDate, List<string> phones, CancellationToken cancellationToken = default)
+    {
+        if (await _userRepository.GetByEmailAsync(email, cancellationToken) is not null)
+            throw new BusinessException(BusinessErrorMessage.USER_WITH_REPEAT_REGISTRATION_EMAIL);
+
+        if (await _userRepository.GetByDocumentAsync(cpf, cancellationToken) is not null)
+            throw new BusinessException(BusinessErrorMessage.DOCUMENT_ALREADY_USED);
+
+        var user = new User
+        {
+            Name = name,
+            Email = email,
+            Document = cpf,
+            Password = StringUtil.SHA512(password),
+            BirthDate = birthDate,
+            Phones = phones,
+            Cellphone = phones.FirstOrDefault() ?? string.Empty,
+        };
+
+        var saved = await _userRepository.InsertAsync(user);
+
+        return await GenerateTokensAsync(saved.Id);
+    }
+
     public async Task<Tokens> AuthenticateAsync(string email, string password, UserSecurityInfo securityInfo)
     {
         var user = await _userRepository.GetByEmailAsync(email);

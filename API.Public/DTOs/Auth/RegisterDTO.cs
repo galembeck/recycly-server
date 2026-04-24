@@ -1,6 +1,6 @@
-namespace API.Public.DTOs.Responsible;
+namespace API.Public.DTOs.Auth;
 
-public sealed record ResponsibleRegisterDTO
+public sealed record RegisterDTO
 {
     public string Name { get; set; }
     public string Email { get; set; }

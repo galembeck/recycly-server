@@ -3,11 +3,12 @@ using API.Public.DTOs;
 using API.Public.DTOs.Auth;
 using API.Public.Filters;
 using API.Public.Validators;
+using API.Public.Validators.Auth;
 using Domain.Enumerators;
+using Domain.Exceptions;
 using Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Exceptions;
 
 namespace API.Public.Controllers;
 
@@ -23,6 +24,22 @@ public class AuthController : _BaseController
         IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
     {
         _authService = authService ?? throw new ArgumentNullException();
+    }
+
+    [HttpPost("register")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Register(
+        [FromBody] RegisterDTO body,
+        CancellationToken cancellationToken = default)
+    {
+        await new RegisterValidator().ValidateAndThrowAsync(body);
+
+        var model = await _authService.RegisterAsync(
+            body.Name, body.Email, body.Cpf, body.Password, body.BirthDate, body.Phones, cancellationToken);
+
+        GenerateAuthCookie(model);
+
+        return Ok(AuthResponseDTO.ModelToDTO(model));
     }
 
     [HttpPost]

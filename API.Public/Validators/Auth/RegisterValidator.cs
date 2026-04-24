@@ -1,12 +1,12 @@
-using API.Public.DTOs.Responsible;
+using API.Public.DTOs.Auth;
 using API.Public.Validators._Base;
 using FluentValidation;
 
-namespace API.Public.Validators.Responsible;
+namespace API.Public.Validators.Auth;
 
-public class ResponsibleRegisterValidator : BaseValidator<ResponsibleRegisterDTO>
+public class RegisterValidator : BaseValidator<RegisterDTO>
 {
-    public ResponsibleRegisterValidator()
+    public RegisterValidator()
     {
         RuleFor(m => m.Name)
             .NotEmpty().WithMessage("CANNOT_BE_EMPTY")
