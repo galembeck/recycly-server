@@ -14,11 +14,11 @@ public static class IdentityResources
         Thread.CurrentPrincipal = principal;
     }
 
-    public static void AddCooperativeOnThread(Cooperative cooperative)
+    public static void AddResponsibleOnThread(Responsible responsible)
     {
         var claims = new List<Claim>();
-        var identity = new ClaimsIdentity(claims, "CooperativeAuth", "Id", ClaimTypes.Role);
-        var principal = new IdentityPrincipal(identity, cooperative);
+        var identity = new ClaimsIdentity(claims, "ResponsibleAuth", "Id", ClaimTypes.Role);
+        var principal = new IdentityPrincipal(identity, responsible);
 
         Thread.CurrentPrincipal = principal;
     }

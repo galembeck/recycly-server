@@ -1,11 +1,11 @@
 ﻿using Domain.Repository;
-using Domain.Repository.Cooperative;
+using Domain.Repository.Responsible;
 using Domain.Repository.User;
 using Domain.Services;
-using Domain.Services.CooperativeAuth;
+using Domain.Services.ResponsibleAuth;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.Repository;
-using Repository.Repository.Cooperative;
+using Repository.Repository.Responsible;
 using Repository.Repository.User;
 using IWishlistRepository = Domain.Repository.IWishlistRepository;
 using WishlistRepository = Repository.Repository.WishlistRepository;
@@ -46,14 +46,14 @@ public static class NativeInjector
 
         #endregion .: AUTH :.
 
-        #region .: COOPERATIVE AUTH :.
+        #region .: RESPONSIBLE AUTH :.
 
-        services.AddScoped<ICooperativeRepository, CooperativeRepository>();
-        services.AddScoped<ICooperativeAccessTokenRepository, CooperativeAccessTokenRepository>();
-        services.AddScoped<ICooperativeRefreshTokenRepository, CooperativeRefreshTokenRepository>();
-        services.AddScoped<ICooperativeAuthService, CooperativeAuthService>();
+        services.AddScoped<IResponsibleRepository, ResponsibleRepository>();
+        services.AddScoped<IResponsibleAccessTokenRepository, ResponsibleAccessTokenRepository>();
+        services.AddScoped<IResponsibleRefreshTokenRepository, ResponsibleRefreshTokenRepository>();
+        services.AddScoped<IResponsibleAuthService, ResponsibleAuthService>();
 
-        #endregion .: COOPERATIVE AUTH :.
+        #endregion .: RESPONSIBLE AUTH :.
 
         #region .: TOKENS :.
 

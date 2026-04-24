@@ -6,7 +6,7 @@ namespace API.Public.Resources;
 public class IdentityPrincipal : IPrincipal
 {
     public User? User { get; }
-    public Cooperative? Cooperative { get; }
+    public Responsible? Responsible { get; }
     public IIdentity Identity { get; }
 
     public IdentityPrincipal(IIdentity identity, User user)
@@ -15,10 +15,10 @@ public class IdentityPrincipal : IPrincipal
         User = user;
     }
 
-    public IdentityPrincipal(IIdentity identity, Cooperative cooperative)
+    public IdentityPrincipal(IIdentity identity, Responsible responsible)
     {
         Identity = identity;
-        Cooperative = cooperative;
+        Responsible = responsible;
     }
 
     public bool IsInRole(string role) => true;

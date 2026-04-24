@@ -108,12 +108,12 @@ public class _BaseController : ControllerBase
         }
     }
 
-    protected void GenerateCooperativeAuthCookie(Tokens model)
+    protected void GenerateResponsibleAuthCookie(Tokens model)
     {
         if (_httpContextAccessor?.HttpContext?.Response?.Cookies != null)
         {
             _httpContextAccessor.HttpContext.Response.Cookies.Append(
-                "Cooperative_AccessToken",
+                "Responsible_AccessToken",
                 model.AccessToken,
                 new CookieOptions
                 {
@@ -125,7 +125,7 @@ public class _BaseController : ControllerBase
             );
 
             _httpContextAccessor.HttpContext.Response.Cookies.Append(
-                "Cooperative_RefreshToken",
+                "Responsible_RefreshToken",
                 model.RefreshToken,
                 new CookieOptions
                 {
@@ -138,12 +138,12 @@ public class _BaseController : ControllerBase
         }
     }
 
-    protected void RemoveCooperativeAuthCookie()
+    protected void RemoveResponsibleAuthCookie()
     {
         if (_httpContextAccessor?.HttpContext?.Response?.Cookies != null)
         {
-            _httpContextAccessor.HttpContext.Response.Cookies.Delete("Cooperative_AccessToken");
-            _httpContextAccessor.HttpContext.Response.Cookies.Delete("Cooperative_RefreshToken");
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete("Responsible_AccessToken");
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete("Responsible_RefreshToken");
         }
     }
 }
