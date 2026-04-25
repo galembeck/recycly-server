@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialProjectMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,14 +18,11 @@ namespace Repository.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Cellphone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Document = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProfileType = table.Column<int>(type: "int", nullable: true),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    Phones = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfileType = table.Column<int>(type: "int", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReceiveWhatsappOffers = table.Column<bool>(type: "bit", nullable: true),
-                    ReceiveEmailOffers = table.Column<bool>(type: "bit", nullable: true),
-                    AvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AvatarPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastAccessAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     PasswordChangeToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PasswordChangeTokenExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -50,12 +47,11 @@ namespace Repository.Migrations
                     DateEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Cellphone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Document = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    Phones = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfileType = table.Column<int>(type: "int", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReceiveWhatsappOffers = table.Column<bool>(type: "bit", nullable: true),
-                    ReceiveEmailOffers = table.Column<bool>(type: "bit", nullable: true),
                     LastAccessAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     PasswordChangeToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PasswordChangeTokenExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -120,40 +116,6 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TBUserAddress",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AddressTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReceiverName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReceiverLastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContactCellphone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Zipcode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Complement = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Neighborhood = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    State = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TBUserAddress", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TBUserAddress_TBUser_UserId",
-                        column: x => x.UserId,
-                        principalTable: "TBUser",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TBUserSecurityInfo",
                 columns: table => new
                 {
@@ -192,11 +154,6 @@ namespace Repository.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TBUserAddress_UserId",
-                table: "TBUserAddress",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TBUserSecurityInfo_UserId",
                 table: "TBUserSecurityInfo",
                 column: "UserId");
@@ -210,9 +167,6 @@ namespace Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "TBRefreshToken");
-
-            migrationBuilder.DropTable(
-                name: "TBUserAddress");
 
             migrationBuilder.DropTable(
                 name: "TBUserHistoric");
