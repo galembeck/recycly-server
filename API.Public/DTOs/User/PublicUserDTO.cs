@@ -8,18 +8,12 @@ public class PublicUserDTO : PublicBaseDTO<User>
 {
     public string Name { get; set; }
     public string Email { get; set; }
-    public string Cellphone { get; set; }
     public string Document { get; set; }
-    public ProfileType? ProfileType { get; set; }
 
+    public DateOnly? BirthDate { get; set; }
+    public List<string>? Phones { get; set; }
 
-
-    public bool? ReceiveWhatsappOffers { get; set; }
-    public bool? ReceiveEmailOffers { get; set; }
-
-
-
-    public string? AvatarUrl { get; set; }
+    public ProfileType ProfileType { get; set; }
 
 
 
@@ -35,12 +29,10 @@ public class PublicUserDTO : PublicBaseDTO<User>
         Id = o.Id;
         Name = o.Name;
         Email = o.Email;
-        Cellphone = o.Cellphone;
         Document = o.Document;
+        BirthDate = o.BirthDate;
+        Phones = o.Phones;
         ProfileType = o.ProfileType;
-        ReceiveWhatsappOffers = o.ReceiveWhatsappOffers;
-        ReceiveEmailOffers = o.ReceiveEmailOffers;
-        AvatarUrl = o.AvatarUrl;
         CreatedAt = o.CreatedAt;
         LastAccessAt = o.LastAccessAt;
     }
@@ -57,12 +49,10 @@ public class PublicUserDTO : PublicBaseDTO<User>
         {
             Name = o.Name,
             Email = o.Email,
-            Cellphone = o.Cellphone,
             Document = o.Document,
+            BirthDate = o.BirthDate,
+            Phones = o.Phones,
             ProfileType = o.ProfileType,
-            ReceiveWhatsappOffers = o.ReceiveWhatsappOffers,
-            ReceiveEmailOffers = o.ReceiveEmailOffers,
-            AvatarUrl = o.AvatarUrl,
             CreatedAt = o.CreatedAt,
             LastAccessAt = o.LastAccessAt,
         };

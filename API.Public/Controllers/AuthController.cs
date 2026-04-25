@@ -26,22 +26,6 @@ public class AuthController : _BaseController
         _authService = authService ?? throw new ArgumentNullException();
     }
 
-    [HttpPost("register")]
-    [AllowAnonymous]
-    public async Task<IActionResult> Register(
-        [FromBody] RegisterDTO body,
-        CancellationToken cancellationToken = default)
-    {
-        await new RegisterValidator().ValidateAndThrowAsync(body);
-
-        var model = await _authService.RegisterAsync(
-            body.Name, body.Email, body.Cpf, body.Password, body.BirthDate, body.Phones, cancellationToken);
-
-        GenerateAuthCookie(model);
-
-        return Ok(AuthResponseDTO.ModelToDTO(model));
-    }
-
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> Authenticate([FromBody] AuthenticateDTO body)

@@ -87,28 +87,6 @@ public class UserRepository : BaseRepository<UserEntity>, IUserRepository
         return response;
     }
 
-    public async Task<UserEntity> GetByEmailCellphoneAsync(string email, string cellphone, CancellationToken cancellationToken = default)
-    {
-        UserEntity response;
-
-        try
-        {
-            response = await _entity
-                .Where(x =>
-                       (String.IsNullOrEmpty(email) || x.Email == email)
-                    || (String.IsNullOrEmpty(cellphone) || x.Cellphone == cellphone)
-                    && x.DeletedAt == null)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(cancellationToken);
-        }
-        catch (System.Exception e)
-        {
-            throw new PersistenceException(e);
-        }
-
-        return response;
-    }
-
     public async Task<UserEntity> GetUserAsync(string id, CancellationToken cancellationToken = default)
     {
         UserEntity response;
@@ -418,7 +396,7 @@ public class UserRepository : BaseRepository<UserEntity>, IUserRepository
         return response;
     }
 
-    public async Task<bool> GetByEmailOrCellphoneForOtherUserAsync(string currentUserId, string email, string cellphone, CancellationToken cancellationToken = default)
+    public async Task<bool> GetByEmailForOtherUserAsync(string currentUserId, string email, CancellationToken cancellationToken = default)
     {
         List<UserEntity> response;
 
@@ -426,8 +404,7 @@ public class UserRepository : BaseRepository<UserEntity>, IUserRepository
         {
             response = await _entity
                 .Where(x =>
-                 ((string.IsNullOrEmpty(email) || x.Email == email) ||
-                 (string.IsNullOrEmpty(cellphone) || x.Cellphone == cellphone))
+                 ((string.IsNullOrEmpty(email) || x.Email == email))
                  && x.Id != currentUserId
                  && x.DeletedAt == null)
                 .AsNoTracking()

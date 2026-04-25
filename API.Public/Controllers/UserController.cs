@@ -73,12 +73,10 @@ public class UserController(IUserService userService) : _BaseController
                 userId,
                 dto.Name,
                 dto.Email,
-                dto.Cellphone,
                 dto.Document,
+                dto.BirthDate,
+                dto.Phones,
                 dto.Password,
-                dto.ReceiveEmailOffers,
-                dto.ReceiveWhatsappOffers,
-                dto.Avatar,
                 cancellationToken);
 
             return Ok(PublicUserDTO.ModelToDTO(user));

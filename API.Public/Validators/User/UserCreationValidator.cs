@@ -14,19 +14,18 @@ public class UserCreationValidator : BaseValidator<PrivateUserDTO>
             .NotNull().WithMessage("CANNOT_BE_NULL")
             .Length(3, 100).WithMessage("INVALID_LENGHT");
 
-        RuleFor(c => c.Email)
+        RuleFor(m => m.Email)
             .EmailAddress()
             .WithMessage("INVALID_EMAIL");
-
-        RuleFor(c => c.Cellphone)
-            .NotEmpty().WithMessage("CANNOT_BE_EMPTY")
-            .Length(10, 16).WithMessage("INVALID_LENGHT")
-            .Must(StringUtil.IsValidCellphone).WithMessage("INVALID_LENGHT");
 
         RuleFor(m => m.Document)
                 .NotEmpty().WithMessage("CANNOT_BE_EMPTY")
                 .NotNull().WithMessage("CANNOT_BE_NULL")
                 .Must(StringUtil.IsValidCPF).WithMessage("INVALID_DOCUMENT");
+
+        RuleFor(c => c.BirthDate)
+            .NotEmpty().WithMessage("CANNOT_BE_EMPTY")
+            .NotNull().WithMessage("CANNOT_BE_NULL");
 
         RuleFor(m => m.Password)
             .NotEmpty().WithMessage("CANNOT_BE_EMPTY")

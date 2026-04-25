@@ -10,7 +10,6 @@ public interface IUserRepository : IRepository<UserEntity>
     Task<UserEntity> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
     Task<UserEntity> GetByDocumentAndEmailAsync(string document, string email, CancellationToken cancellationToken = default);
     Task<UserEntity> GetByDocumentPasswordAsync(string document, string password, CancellationToken cancellationToken = default);
-    Task<UserEntity> GetByEmailCellphoneAsync(string email, string cellphone, CancellationToken cancellationToken = default);
     Task<UserEntity> GetUserAsync(string id, CancellationToken cancellationToken = default);
     Task<List<UserEntity>> GetAllUserAsync(CancellationToken cancellationToken = default);
     Task<List<UserEntity>> GetAllByProfileTypeAsync(ProfileType profileType, CancellationToken cancellationToken = default);
@@ -26,7 +25,7 @@ public interface IUserRepository : IRepository<UserEntity>
     //Task<PagedResult<User>> GetUserPaginate(IQueryable<User> query, int page, int pageSize, bool isDesc, string orderBy, bool isOrdered, CancellationToken cancellationToken = default);
 
     Task<string> GetByPrimaryDocument(string primaryDocument, CancellationToken cancellationToken = default);
-    Task<bool> GetByEmailOrCellphoneForOtherUserAsync(string currentUserId, string email, string cellphone, CancellationToken cancellationToken = default);
+    Task<bool> GetByEmailForOtherUserAsync(string currentUserId, string email, CancellationToken cancellationToken = default);
     Task<UserEntity> GetNameAndPrimaryDocumentAsync(string id, CancellationToken cancellationToken = default);
 
     //Task<List<ClientPrimaryDocumentLogins>> GetUserByPrimaryDocumentAsync(string primaryDocument, CancellationToken cancellationToken = default);

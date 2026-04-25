@@ -41,7 +41,7 @@ public class FileStorageService : IFileStorageService
 
             return relativePath;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw new BusinessException(BusinessErrorMessage.SOMETHING_WENT_WRONG);
         }

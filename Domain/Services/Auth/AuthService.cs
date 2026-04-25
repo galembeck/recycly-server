@@ -54,7 +54,6 @@ public class AuthService : IAuthService
             Password = StringUtil.SHA512(password),
             BirthDate = birthDate,
             Phones = phones,
-            Cellphone = phones.FirstOrDefault() ?? string.Empty,
         };
 
         var saved = await _userRepository.InsertAsync(user);
