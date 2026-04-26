@@ -7,7 +7,7 @@ namespace Domain.Services;
 public interface IAuthService
 {
     Task<Tokens> RegisterAsync(string name, string email, string cpf, string password, DateOnly birthDate, List<string> phones, CancellationToken cancellationToken = default);
-    Task<Tokens> AuthenticateAsync(string email, string password, UserSecurityInfo securityInfo);
+    Task<Tokens> AuthenticateAsync(string identifier, string password, UserSecurityInfo securityInfo);
 
     Task<Tokens> RefreshAsync(string refreshTokenId);
 

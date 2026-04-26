@@ -61,9 +61,14 @@ public class AuthService : IAuthService
         return await GenerateTokensAsync(saved.Id);
     }
 
-    public async Task<Tokens> AuthenticateAsync(string email, string password, UserSecurityInfo securityInfo)
+    public async Task<Tokens> AuthenticateAsync(string identifier, string password, UserSecurityInfo securityInfo)
     {
-        var user = await _userRepository.GetByEmailAsync(email);
+        var clean = identifier.Trim();
+        var cleanDigits = new string(clean.Where(char.IsDigit).ToArray());
+
+        var user = cleanDigits.Length == 11
+            ? await _userRepository.GetByDocumentAsync(cleanDigits)
+            : await _userRepository.GetByEmailAsync(clean.ToLower());
 
         if (user is null)
             throw new BusinessException(BusinessErrorMessage.USER_NOT_FOUND);

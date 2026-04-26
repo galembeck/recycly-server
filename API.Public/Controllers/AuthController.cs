@@ -35,7 +35,7 @@ public class AuthController : _BaseController
         await new AuthenticateValidator().ValidateAndThrowAsync(body);
 
         var model = await _authService
-            .AuthenticateAsync(body.Email, body.Password, securityInfo);
+            .AuthenticateAsync(body.Identifier, body.Password, securityInfo);
 
         GenerateAuthCookie(model);
 

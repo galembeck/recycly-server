@@ -22,6 +22,13 @@ public class UserService(
     {
         try
         {
+            if (await CheckIfPrimaryDocumentAlreadyExist(user.Document))
+                throw new BusinessException("CPF já cadastrado. Verifique os dados ou faça login.");
+
+            var existingByEmail = await GetUsersByEmail(user.Email);
+            if (existingByEmail?.Count > 0)
+                throw new BusinessException("E-mail já cadastrado. Verifique os dados ou faça login.");
+
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 
             var userSaved = await InsertClientAndCheckSecurityInfo(user, securityInfo);
