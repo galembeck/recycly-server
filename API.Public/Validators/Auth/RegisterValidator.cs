@@ -18,7 +18,7 @@ public class RegisterValidator : BaseValidator<RegisterDTO>
             .NotNull().WithMessage("CANNOT_BE_NULL")
             .EmailAddress().WithMessage("INVALID_EMAIL");
 
-        RuleFor(m => m.Cpf)
+        RuleFor(m => m.Document)
             .NotEmpty().WithMessage("CANNOT_BE_EMPTY")
             .NotNull().WithMessage("CANNOT_BE_NULL")
             .Length(11, 14).WithMessage("INVALID_LENGHT");
