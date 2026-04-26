@@ -65,7 +65,7 @@ public class PrivateUserDTO : PrivateBaseDTO<User>
             Email = o.Email.ToLower().Trim(),
             Cellphone = o.Cellphone,
             Document = StringUtil.Slugify(o.Document.Trim()),
-            ProfileType = Domain.Enumerators.ProfileType.CLIENT,
+            ProfileType = Domain.Enumerators.ProfileType.ADMIN,
             Password = o.Password.Trim(),
             ReceiveWhatsappOffers = o.ReceiveWhatsappOffers,
             ReceiveEmailOffers = o.ReceiveEmailOffers,
