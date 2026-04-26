@@ -99,9 +99,6 @@ namespace Repository.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("DocumentUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateOnly?>("BirthDate")
                         .HasColumnType("date");
 
@@ -117,6 +114,9 @@ namespace Repository.Migrations
 
                     b.Property<string>("Document")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DocumentUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")

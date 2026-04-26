@@ -12,8 +12,8 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260426000000_AddAvatarUrlToUser")]
-    partial class AddAvatarUrlToUser
+    [Migration("20260426130000_AddDocumentUrlToUser")]
+    partial class AddDocumentUrlToUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
