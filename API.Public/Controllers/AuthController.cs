@@ -37,6 +37,8 @@ public class AuthController : _BaseController
         var model = await _authService
             .AuthenticateAsync(body.Email, body.Password, securityInfo);
 
+        GenerateAuthCookie(model);
+
         return Ok(AuthResponseDTO.ModelToDTO(model));
     }
 
