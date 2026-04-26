@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
         services.AddHttpContextAccessor();
 
         services.ConfigureHangfire(configuration);
-        services.ConfigureResend();
+        // services.ConfigureResend();
         services.ConfigureInjections();
         services.AddSignalR();
         services.AddAuthorization();

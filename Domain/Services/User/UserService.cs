@@ -28,8 +28,8 @@ public class UserService(
 
             scope.Complete();
 
-            _backgroundJobClient.Enqueue<IEmailService>(s =>
-                s.SendWelcomeEmailAsync(userSaved.Name, userSaved.Email));
+            // _backgroundJobClient.Enqueue<IEmailService>(s =>
+            //     s.SendWelcomeEmailAsync(userSaved.Name, userSaved.Email));
 
             return userSaved;
         }

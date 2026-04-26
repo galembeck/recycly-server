@@ -51,11 +51,9 @@ public static class NativeInjector
 
         #endregion .: FILE STORAGE :.
 
-        #region .: EMAIL :.
-
-        services.AddScoped<IEmailService, EmailService>();
-
-        #endregion .: EMAIL :.
+        // #region .: EMAIL :.
+        // services.AddScoped<IEmailService, EmailService>();
+        // #endregion .: EMAIL :.
 
         #endregion .: INTERNAL INJECTIONS :.
     }

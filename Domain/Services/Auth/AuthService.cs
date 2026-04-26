@@ -392,8 +392,8 @@ public class AuthService : IAuthService
                 u.PasswordChangeTokenExpiresAt = expiresAt;
             });
 
-        _backgroundJobClient.Enqueue<IEmailService>(s =>
-            s.SendPasswordRecoveryEmailAsync(user.Name, user.Email, token, expiresAt.UtcDateTime));
+        // _backgroundJobClient.Enqueue<IEmailService>(s =>
+        //     s.SendPasswordRecoveryEmailAsync(user.Name, user.Email, token, expiresAt.UtcDateTime));
     }
 
     public async Task<bool> VerifyPasswordRecoveryTokenAsync(string email, string token, CancellationToken cancellationToken = default)
