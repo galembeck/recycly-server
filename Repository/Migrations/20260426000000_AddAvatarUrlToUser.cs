@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAvatarUrlToUser : Migration
+    public partial class AddDocumentUrlToUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "AvatarUrl",
+                name: "DocumentUrl",
                 table: "TBUser",
                 type: "nvarchar(max)",
                 nullable: true);
@@ -21,7 +21,7 @@ namespace Repository.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "AvatarUrl",
+                name: "DocumentUrl",
                 table: "TBUser");
         }
     }

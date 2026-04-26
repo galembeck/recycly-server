@@ -21,7 +21,7 @@ public class UserController(IUserService userService, IFileStorageService fileSt
     [HttpPost]
     [AllowAnonymous]
     [Consumes("multipart/form-data")]
-    public async Task<IActionResult> Register([FromForm] PrivateUserDTO body, IFormFile? avatar)
+    public async Task<IActionResult> Register([FromForm] PrivateUserDTO body, IFormFile? document)
     {
         var securityInfo = GetSecurityInfo(Request);
 
@@ -29,11 +29,11 @@ public class UserController(IUserService userService, IFileStorageService fileSt
 
         var user = PrivateUserDTO.DTOToModel(body)!;
 
-        if (avatar != null)
+        if (document != null)
         {
-            using var stream = avatar.OpenReadStream();
-            var relativePath = await _fileStorageService.UploadFileAsync(stream, avatar.FileName, "avatars");
-            user.AvatarUrl = _fileStorageService.GetFileUrl(relativePath);
+            using var stream = document.OpenReadStream();
+            var relativePath = await _fileStorageService.UploadFileAsync(stream, document.FileName, "documents");
+            user.DocumentUrl = _fileStorageService.GetFileUrl(relativePath);
         }
 
         var model = await _userService.CreateAsync(user, securityInfo);

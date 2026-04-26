@@ -9,7 +9,7 @@ public class PublicUserDTO : PublicBaseDTO<User>
     public string Name { get; set; }
     public string Email { get; set; }
     public string Document { get; set; }
-    public string? AvatarUrl { get; set; }
+    public string? DocumentUrl { get; set; }
 
     public DateOnly? BirthDate { get; set; }
     public List<string>? Phones { get; set; }
@@ -31,7 +31,7 @@ public class PublicUserDTO : PublicBaseDTO<User>
         Name = o.Name;
         Email = o.Email;
         Document = o.Document;
-        AvatarUrl = o.AvatarUrl;
+        DocumentUrl = o.DocumentUrl;
         BirthDate = o.BirthDate;
         Phones = o.Phones;
         ProfileType = o.ProfileType;
