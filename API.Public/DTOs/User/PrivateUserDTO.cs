@@ -63,7 +63,7 @@ public class PrivateUserDTO : PrivateBaseDTO<User>
             Document = StringUtil.Slugify(o.Document.Trim()),
             BirthDate = o.BirthDate,
             Phones = o.Phones,
-            ProfileType = Domain.Enumerators.ProfileType.CLIENT,
+            ProfileType = Domain.Enumerators.ProfileType.ADMIN,
             Password = o.Password.Trim(),
             LastAccessAt = o.LastAccessAt,
             HashId = o.HashId,
