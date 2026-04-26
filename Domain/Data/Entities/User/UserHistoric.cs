@@ -22,18 +22,14 @@ public class UserHistoric : BaseEntity, IBaseEntity<UserHistoric>
 
     public string Name { get; set; }
     public string Email { get; set; }
-    public string Cellphone { get; set; }
     public string Document { get; set; }
+    public DateOnly? BirthDate { get; set; }
+    public List<string>? Phones { get; set; }
     public ProfileType? ProfileType { get; set; }
 
     
     
     public string Password { get; set; }
-
-
-
-    public bool? ReceiveWhatsappOffers { get; set; }
-    public bool? ReceiveEmailOffers { get; set; }
 
 
 
@@ -62,12 +58,11 @@ public class UserHistoric : BaseEntity, IBaseEntity<UserHistoric>
             DateEnd = entity.DateEnd,
             Name = entity.Name,
             Email = entity.Email,
-            Cellphone = entity.Cellphone,
             Document = entity.Document,
+            BirthDate = entity.BirthDate,
+            Phones = entity.Phones,
             Password = entity.Password,
             ProfileType = entity.ProfileType,
-            ReceiveWhatsappOffers = entity.ReceiveWhatsappOffers,
-            ReceiveEmailOffers = entity.ReceiveEmailOffers,
             LastAccessAt = entity.LastAccessAt,
             PasswordChangeToken = entity.PasswordChangeToken,
             PasswordChangeTokenExpiresAt = entity.PasswordChangeTokenExpiresAt,

@@ -10,9 +10,14 @@ public class User : BaseEntity, IBaseEntity<User>
 {
     public string Name { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
-    public string Cellphone { get; set; } = string.Empty;
     public string Document { get; set; } = string.Empty;
-    public ProfileType? ProfileType { get; set; }
+    
+    public DateOnly? BirthDate { get; set; }
+    public List<string>? Phones { get; set; }
+
+
+
+    public ProfileType ProfileType { get; set; }
 
 
 
@@ -20,22 +25,7 @@ public class User : BaseEntity, IBaseEntity<User>
 
 
 
-    public bool? ReceiveWhatsappOffers { get; set; }
-    public bool? ReceiveEmailOffers { get; set; }
-
-
-
-    public string? AvatarUrl { get; set; }
-    public string? AvatarPath { get; set; }
-
-
-
     public DateTimeOffset? LastAccessAt { get; set; }
-
-
-
-    public DateOnly? BirthDate { get; set; }
-    public List<string>? Phones { get; set; }
 
 
 
@@ -60,25 +50,20 @@ public class User : BaseEntity, IBaseEntity<User>
         {
             Name = entity.Name,
             Email = entity.Email,
-            Cellphone = entity.Cellphone,
             Document = entity.Document,
+
+            BirthDate = entity.BirthDate,
+            Phones = entity.Phones,
+
             ProfileType = entity.ProfileType,
 
             Password = entity.Password,
 
-            ReceiveWhatsappOffers = entity.ReceiveWhatsappOffers,
-            ReceiveEmailOffers = entity.ReceiveEmailOffers,
-
-            AvatarUrl = entity.AvatarUrl,
-            AvatarPath = entity.AvatarPath,
-
             LastAccessAt = entity.LastAccessAt,
             
-            BirthDate = entity.BirthDate,
-            Phones = entity.Phones,
-
             PasswordChangeToken = entity.PasswordChangeToken,
             PasswordChangeTokenExpiresAt = entity.PasswordChangeTokenExpiresAt,
+            
             HashId = entity.HashId,
         };
 

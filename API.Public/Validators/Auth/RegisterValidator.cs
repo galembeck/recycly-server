@@ -1,10 +1,11 @@
+using API.Public.DTOs;
 using API.Public.DTOs.Auth;
 using API.Public.Validators._Base;
 using FluentValidation;
 
 namespace API.Public.Validators.Auth;
 
-public class RegisterValidator : BaseValidator<RegisterDTO>
+public class RegisterValidator : BaseValidator<PrivateUserDTO>
 {
     public RegisterValidator()
     {
@@ -18,7 +19,7 @@ public class RegisterValidator : BaseValidator<RegisterDTO>
             .NotNull().WithMessage("CANNOT_BE_NULL")
             .EmailAddress().WithMessage("INVALID_EMAIL");
 
-        RuleFor(m => m.Cpf)
+        RuleFor(m => m.Document)
             .NotEmpty().WithMessage("CANNOT_BE_EMPTY")
             .NotNull().WithMessage("CANNOT_BE_NULL")
             .Length(11, 14).WithMessage("INVALID_LENGHT");

@@ -5,7 +5,6 @@ using Domain.Repository;
 using Domain.Repository.User;
 using Domain.Utils;
 using Hangfire;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Transactions;
 
@@ -16,25 +15,21 @@ public class UserService(
     IUserRepository userRepository,
     IUserSecurityInfoRepository userSecurityInfoRepository,
     IUserHistoricService userHistoricService,
-    IFileStorageService fileStorageService,
     IBackgroundJobClient backgroundJobClient) : IUserService(repository)
 {
-    private readonly IFileStorageService _fileStorageService = fileStorageService;
     private readonly IBackgroundJobClient _backgroundJobClient = backgroundJobClient;
     public override async Task<User> CreateAsync(User user, UserSecurityInfo securityInfo)
     {
         try
         {
-            CheckAndSanitizeCellphone(user);
-
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 
             var userSaved = await InsertClientAndCheckSecurityInfo(user, securityInfo);
 
             scope.Complete();
 
-            _backgroundJobClient.Enqueue<IEmailService>(s =>
-                s.SendWelcomeEmailAsync(userSaved.Name, userSaved.Email));
+            // _backgroundJobClient.Enqueue<IEmailService>(s =>
+            //     s.SendWelcomeEmailAsync(userSaved.Name, userSaved.Email));
 
             return userSaved;
         }
@@ -48,19 +43,13 @@ public class UserService(
     {
         try
         {
-            CheckAndSanitizeCellphone(user);
-
             var existingUser = await _Repository.GetUserAsync(userId);
             if (existingUser is null)
                 throw new BusinessException(BusinessErrorMessage.USER_NOT_FOUND);
 
-            if (!CellPhoneUtil.CheckDDDNumberIsValid(user.Cellphone))
-                throw new BusinessException(BusinessErrorMessage.INVALID_DDD_NUMBER);
-
             var changes = VerifyUserChanges(existingUser, user);
 
             existingUser.Email = user.Email;
-            existingUser.Cellphone = user.Cellphone;
             existingUser.UpdatedBy = existingUser.Id;
 
             var userSaved = await _Repository.UpdateAsync(existingUser, userId);
@@ -166,24 +155,12 @@ public class UserService(
         string userId,
         string? name,
         string? email,
-        string? cellphone,
         string? document,
+        DateOnly? birthDate,
+        List<string>? phones,
         string? password,
-        bool? receiveEmailOffers,
-        bool? receiveWhatsappOffers,
-        IFormFile? avatar,
         CancellationToken cancellationToken = default)
     {
-        string? newAvatarPath = null;
-        string? newAvatarUrl = null;
-
-        if (avatar != null)
-        {
-            using var stream = avatar.OpenReadStream();
-            newAvatarPath = await _fileStorageService.UploadFileAsync(stream, avatar.FileName, "avatars");
-            newAvatarUrl = _fileStorageService.GetFileUrl(newAvatarPath);
-        }
-
         var hashedPassword = !string.IsNullOrWhiteSpace(password)
             ? StringUtil.SHA512(password)
             : null;
@@ -196,21 +173,14 @@ public class UserService(
                     user.Name = name;
                 if (!string.IsNullOrWhiteSpace(email))
                     user.Email = email;
-                if (!string.IsNullOrWhiteSpace(cellphone))
-                    user.Cellphone = cellphone;
                 if (!string.IsNullOrWhiteSpace(document))
                     user.Document = document;
+                if (birthDate.HasValue)
+                    user.BirthDate = birthDate;
+                if (phones != null)
+                    user.Phones = phones;
                 if (hashedPassword != null)
                     user.Password = hashedPassword;
-                if (receiveEmailOffers.HasValue)
-                    user.ReceiveEmailOffers = receiveEmailOffers;
-                if (receiveWhatsappOffers.HasValue)
-                    user.ReceiveWhatsappOffers = receiveWhatsappOffers;
-                if (newAvatarPath != null)
-                {
-                    user.AvatarPath = newAvatarPath;
-                    user.AvatarUrl = newAvatarUrl;
-                }
             },
             userId);
     }
@@ -251,13 +221,6 @@ public class UserService(
     }
 
     #region .: HELPER METHODS :.
-    private void CheckAndSanitizeCellphone(User user)
-    {
-        if (user.Cellphone.Substring(2, 1) != "9")
-            throw new System.Exception("Número do celular após o DDD precisa iniciar com 9");
-        user.Cellphone = user.Cellphone.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
-    }
-
     private async Task<User> InsertClientAndCheckSecurityInfo(User user, UserSecurityInfo securityInfo)
     {
         user.Password = StringUtil.SHA512(user.Password);
@@ -302,8 +265,11 @@ public class UserService(
         if (!string.IsNullOrEmpty(user?.Email) && existingUser.Email != user.Email)
             changes += GenerateChangesString(" Email");
 
-        if (!string.IsNullOrEmpty(user?.Cellphone) && existingUser.Cellphone != user.Cellphone)
-            changes += GenerateChangesString(" Celular");
+        if (!string.IsNullOrEmpty(user?.BirthDate.ToString()) && existingUser.BirthDate != user.BirthDate)
+            changes += GenerateChangesString(" Data de Nascimento");
+
+        if (!string.IsNullOrEmpty(user?.Phones.FirstOrDefault()) && existingUser.Phones != user.Phones)
+            changes += GenerateChangesString(" Telefone");
 
         if (!string.IsNullOrEmpty(changes))
             changes = changes.Substring(1, changes.Length - 2);
@@ -329,12 +295,11 @@ public class UserService(
             DateEnd = null,
             Name = user.Name,
             Email = user.Email,
-            Cellphone = user.Cellphone,
             Document = user.Document,
+            BirthDate = user.BirthDate,
+            Phones = user.Phones,
             LastAccessAt = user.LastAccessAt,
             ProfileType = user.ProfileType,
-            ReceiveWhatsappOffers = user.ReceiveWhatsappOffers,
-            ReceiveEmailOffers = user.ReceiveEmailOffers,
             CreatedBy = user.CreatedBy,
             UpdatedBy = user.UpdatedBy,
             CreatedAt = user.CreatedAt,

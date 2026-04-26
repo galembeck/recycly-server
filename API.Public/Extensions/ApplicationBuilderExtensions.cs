@@ -1,5 +1,4 @@
 ﻿using API.Public.Configuration;
-using API.Public.Hubs;
 using API.Public.Resources;
 using AspNetCoreRateLimit;
 using Domain.Constants;
@@ -43,7 +42,6 @@ public static class ApplicationBuilderExtensions
         app.UseAuthorization();
 
         app.MapControllers();
-        app.MapHub<AdminNotificationHub>("/hubs/notifications");
         app.UseHangfireDashboard();
     }
  }

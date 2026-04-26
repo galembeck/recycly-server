@@ -10,18 +10,16 @@ public class PrivateUserDTO : PrivateBaseDTO<User>
 {
     public string Name { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
-    public string Cellphone { get; set; } = string.Empty;
     public string Document { get; set; } = string.Empty;
+
+    public DateOnly? BirthDate { get; set; }
+    public List<string>? Phones { get; set; }
+
     public ProfileType? ProfileType { get; set; }
 
 
 
     public string Password { get; set; } = string.Empty;
-
-
-
-    public bool? ReceiveWhatsappOffers { get; set; }
-    public bool? ReceiveEmailOffers { get; set; }
 
 
 
@@ -41,12 +39,11 @@ public class PrivateUserDTO : PrivateBaseDTO<User>
 
         Name = o.Name;
         Email = o.Email;
-        Cellphone = o.Cellphone;
         Document = o.Document;
+        BirthDate = o.BirthDate;
+        Phones = o.Phones;
         ProfileType = o.ProfileType;
         Password = o.Password;
-        ReceiveWhatsappOffers = o.ReceiveWhatsappOffers;
-        ReceiveEmailOffers = o.ReceiveEmailOffers;
         LastAccessAt = o.LastAccessAt;
         HashId = o.HashId;
     }
@@ -63,12 +60,11 @@ public class PrivateUserDTO : PrivateBaseDTO<User>
         {
             Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(o.Name.ToLower().Trim()),
             Email = o.Email.ToLower().Trim(),
-            Cellphone = o.Cellphone,
             Document = StringUtil.Slugify(o.Document.Trim()),
+            BirthDate = o.BirthDate,
+            Phones = o.Phones,
             ProfileType = Domain.Enumerators.ProfileType.ADMIN,
             Password = o.Password.Trim(),
-            ReceiveWhatsappOffers = o.ReceiveWhatsappOffers,
-            ReceiveEmailOffers = o.ReceiveEmailOffers,
             LastAccessAt = o.LastAccessAt,
             HashId = o.HashId,
         };
@@ -108,11 +104,10 @@ public class PrivateUserDTO : PrivateBaseDTO<User>
     {
         Name = o.Name;
         Email = o.Email;
-        Cellphone = o.Cellphone;
         Document = o.Document;
+        BirthDate = o.BirthDate;
+        Phones = o.Phones;
         ProfileType = o.ProfileType;
-        ReceiveWhatsappOffers = o.ReceiveWhatsappOffers;
-        ReceiveEmailOffers = o.ReceiveEmailOffers;
     }
 
     #endregion .: METHODS :.
