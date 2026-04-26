@@ -13,28 +13,32 @@ namespace API.Public.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController(IUserService userService) : _BaseController
+public class UserController(IUserService userService, IFileStorageService fileStorageService) : _BaseController
 {
     private readonly IUserService _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+    private readonly IFileStorageService _fileStorageService = fileStorageService ?? throw new ArgumentNullException(nameof(fileStorageService));
 
     [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> Register([FromBody] PrivateUserDTO body)
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> Register([FromForm] PrivateUserDTO body, IFormFile? avatar)
     {
-        try
+        var securityInfo = GetSecurityInfo(Request);
+
+        await new UserCreationValidator().ValidateAndThrowAsync(body);
+
+        var user = PrivateUserDTO.DTOToModel(body)!;
+
+        if (avatar != null)
         {
-            var securityInfo = GetSecurityInfo(Request);
-
-            await new UserCreationValidator().ValidateAndThrowAsync(body);
-
-            var model = await _userService.CreateAsync(PrivateUserDTO.DTOToModel(body), securityInfo);
-
-            return Ok(PublicUserDTO.ModelToDTO(model));
-        } catch (Exception e)
-        {
-            StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            throw;
+            using var stream = avatar.OpenReadStream();
+            var relativePath = await _fileStorageService.UploadFileAsync(stream, avatar.FileName, "avatars");
+            user.AvatarUrl = _fileStorageService.GetFileUrl(relativePath);
         }
+
+        var model = await _userService.CreateAsync(user, securityInfo);
+
+        return Ok(PublicUserDTO.ModelToDTO(model));
     }
 
     [AuthAttribute]

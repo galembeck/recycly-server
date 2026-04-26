@@ -11,6 +11,7 @@ public class User : BaseEntity, IBaseEntity<User>
     public string Name { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Document { get; set; } = string.Empty;
+    public string? AvatarUrl { get; set; }
     
     public DateOnly? BirthDate { get; set; }
     public List<string>? Phones { get; set; }
@@ -51,6 +52,7 @@ public class User : BaseEntity, IBaseEntity<User>
             Name = entity.Name,
             Email = entity.Email,
             Document = entity.Document,
+            AvatarUrl = entity.AvatarUrl,
 
             BirthDate = entity.BirthDate,
             Phones = entity.Phones,
