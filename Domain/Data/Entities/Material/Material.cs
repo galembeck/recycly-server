@@ -12,6 +12,7 @@ public class Material : BaseEntity, IBaseEntity<Material>
     public string Color { get; set; } = string.Empty;
 
     public List<CollectionPoint>? CollectionPoints { get; set; }
+    public List<Sale>? Sales { get; set; }
 
     #region .: METHODS :.
 

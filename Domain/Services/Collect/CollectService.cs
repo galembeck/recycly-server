@@ -36,6 +36,11 @@ public class CollectService(
         return await _Repository.GetByCollectionPointAsync(collectionPointId, cancellationToken);
     }
 
+    public override async Task<List<Collect>> GetByCooperativeAsync(string cooperativeId, CancellationToken cancellationToken = default)
+    {
+        return await _Repository.GetByCooperativeAsync(cooperativeId, cancellationToken);
+    }
+
     public override async Task DeleteCollectAsync(string id, string userId, CancellationToken cancellationToken = default)
     {
         var existing = await _Repository.GetAsync(id, cancellationToken);

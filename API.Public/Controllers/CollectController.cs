@@ -24,6 +24,15 @@ public class CollectController(ICollectService collectService) : _BaseController
         return Ok(CollectResponseDTO.ModelToDTO(collects));
     }
 
+    [HttpGet("cooperative")]
+    [AuthAttribute]
+    [Filters.Authorize(ProfileType.COOPERATIVE, ProfileType.ADMIN)]
+    public async Task<IActionResult> GetByCooperative(CancellationToken cancellationToken = default)
+    {
+        var collects = await _service.GetByCooperativeAsync(Authenticated.User.Id, cancellationToken);
+        return Ok(CollectResponseDTO.ModelToDTO(collects));
+    }
+
     [HttpGet("point/{pointId}")]
     [AuthAttribute]
     [Filters.Authorize(ProfileType.COOPERATIVE, ProfileType.ADMIN)]

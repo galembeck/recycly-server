@@ -73,6 +73,19 @@ public static class NativeInjector
 
         #endregion .: COLLECT :.
 
+        #region .: SALE :.
+
+        services.AddScoped<ISaleRepository, SaleRepository>();
+        services.AddScoped<ISaleService, SaleService>();
+
+        #endregion .: SALE :.
+
+        #region .: DASHBOARD :.
+
+        services.AddScoped<IDashboardService, DashboardService>();
+
+        #endregion .: DASHBOARD :.
+
         #region .: GEOCODING :.
 
         services.AddScoped<IGeocodingService, GeocodingService>();

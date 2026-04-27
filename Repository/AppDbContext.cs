@@ -16,6 +16,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Material> Materials { get; set; }
     public DbSet<CollectionPoint> CollectionPoints { get; set; }
     public DbSet<Collect> Collects { get; set; }
+    public DbSet<Sale> Sales { get; set; }
 
     #endregion .: ENTITIES :.
 

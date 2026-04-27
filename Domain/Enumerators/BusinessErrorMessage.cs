@@ -106,4 +106,6 @@ public enum BusinessErrorMessage
     [EnumDescription("COLLECTION_POINT_NOT_BELONG_THIS_USER")]
     COLLECTION_POINT_NOT_BELONG_THIS_USER = 33,
 
+    [EnumDescription("SALE_NOT_FOUND")]
+    SALE_NOT_FOUND = 34,
 }

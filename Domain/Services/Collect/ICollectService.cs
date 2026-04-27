@@ -12,5 +12,6 @@ public abstract class ICollectService : IService<Collect, ICollectRepository, Ba
     public abstract Task<Collect> CreateCollectAsync(Collect collect, string actorId, CancellationToken cancellationToken = default);
     public abstract Task<List<Collect>> GetByUserAsync(string userId, CancellationToken cancellationToken = default);
     public abstract Task<List<Collect>> GetByCollectionPointAsync(string collectionPointId, CancellationToken cancellationToken = default);
+    public abstract Task<List<Collect>> GetByCooperativeAsync(string cooperativeId, CancellationToken cancellationToken = default);
     public abstract Task DeleteCollectAsync(string id, string userId, CancellationToken cancellationToken = default);
 }
