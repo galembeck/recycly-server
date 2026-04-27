@@ -86,6 +86,12 @@ public static class NativeInjector
 
         #endregion .: DASHBOARD :.
 
+        #region .: STATISTICS :.
+
+        services.AddScoped<IStatisticsService, StatisticsService>();
+
+        #endregion .: STATISTICS :.
+
         #region .: GEOCODING :.
 
         services.AddScoped<IGeocodingService, GeocodingService>();
