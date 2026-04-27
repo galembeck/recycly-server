@@ -1,6 +1,7 @@
 using Domain.Repository;
 using Domain.Repository.User;
 using Domain.Services;
+using Domain.Services.Geocoding;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.Repository;
 using Repository.Repository.User;
@@ -50,6 +51,33 @@ public static class NativeInjector
         services.AddScoped<IFileStorageService, FileStorageService>();
 
         #endregion .: FILE STORAGE :.
+
+        #region .: MATERIAL :.
+
+        services.AddScoped<IMaterialRepository, MaterialRepository>();
+        services.AddScoped<IMaterialService, MaterialService>();
+
+        #endregion .: MATERIAL :.
+
+        #region .: COLLECTION POINT :.
+
+        services.AddScoped<ICollectionPointRepository, CollectionPointRepository>();
+        services.AddScoped<ICollectionPointService, CollectionPointService>();
+
+        #endregion .: COLLECTION POINT :.
+
+        #region .: COLLECT :.
+
+        services.AddScoped<ICollectRepository, CollectRepository>();
+        services.AddScoped<ICollectService, CollectService>();
+
+        #endregion .: COLLECT :.
+
+        #region .: GEOCODING :.
+
+        services.AddScoped<IGeocodingService, GeocodingService>();
+
+        #endregion .: GEOCODING :.
 
         // #region .: EMAIL :.
         // services.AddScoped<IEmailService, EmailService>();

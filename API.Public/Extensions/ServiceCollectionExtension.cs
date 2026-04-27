@@ -49,6 +49,13 @@ public static class ServiceCollectionExtensions
             options.MinimumSameSitePolicy = SameSiteMode.None;
             options.Secure = CookieSecurePolicy.Always;
         });
+
+        services.AddHttpClient("Nominatim", client =>
+        {
+            client.BaseAddress = new Uri("https://nominatim.openstreetmap.org");
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("Recycly/1.0 (contact@recycly.com)");
+            client.Timeout = TimeSpan.FromSeconds(10);
+        });
     }
 
     private static void ConfigureResend(this IServiceCollection services)

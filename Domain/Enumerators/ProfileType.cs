@@ -9,4 +9,7 @@ public enum ProfileType
 
     [EnumDescription("CLIENT")]
     CLIENT = 2,
+
+    [EnumDescription("COOPERATIVE")]
+    COOPERATIVE = 3,
 }

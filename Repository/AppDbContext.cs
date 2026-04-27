@@ -13,6 +13,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<AccessToken> AccessTokens { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
+    public DbSet<Material> Materials { get; set; }
+    public DbSet<CollectionPoint> CollectionPoints { get; set; }
+    public DbSet<Collect> Collects { get; set; }
+
     #endregion .: ENTITIES :.
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }

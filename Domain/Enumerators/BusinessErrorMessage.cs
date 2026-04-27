@@ -91,4 +91,19 @@ public enum BusinessErrorMessage
     [EnumDescription("ADDRESS_NOT_FOUND")]
     ADDRESS_NOT_FOUND = 28,
 
+    [EnumDescription("MATERIAL_NOT_FOUND")]
+    MATERIAL_NOT_FOUND = 29,
+
+    [EnumDescription("COLLECTION_POINT_NOT_FOUND")]
+    COLLECTION_POINT_NOT_FOUND = 30,
+
+    [EnumDescription("COLLECT_NOT_FOUND")]
+    COLLECT_NOT_FOUND = 31,
+
+    [EnumDescription("MATERIAL_NOT_ACCEPTED_AT_POINT")]
+    MATERIAL_NOT_ACCEPTED_AT_POINT = 32,
+
+    [EnumDescription("COLLECTION_POINT_NOT_BELONG_THIS_USER")]
+    COLLECTION_POINT_NOT_BELONG_THIS_USER = 33,
+
 }

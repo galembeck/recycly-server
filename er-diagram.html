@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #ffffff; display: flex; justify-content: center; padding: 32px; font-family: sans-serif; }
+    .mermaid { max-width: 1400px; width: 100%; }
+  </style>
+</head>
+<body>
+  <div class="mermaid">
+erDiagram
+    TBUser {
+        string Id PK
+        string Name
+        string Email
+        string Document
+        string DocumentUrl
+        date BirthDate
+        json Phones
+        string ProfileType
+        string Password
+        datetime LastAccessAt
+        string PasswordChangeToken
+        datetime CreatedAt
+        datetime UpdatedAt
+        datetime DeletedAt
+        string CreatedBy
+        string UpdatedBy
+    }
+
+    TBUserSecurityInfo {
+        string Id PK
+        string UserId FK
+        string Ip
+        string MacAdress
+        string Browser
+        string Hash
+        string Moment
+        datetime CreatedAt
+        datetime UpdatedAt
+        datetime DeletedAt
+    }
+
+    TBUserHistoric {
+        string Id PK
+        string IdUser
+        datetime DateStart
+        datetime DateEnd
+        string Name
+        string Email
+        string Document
+        date BirthDate
+        json Phones
+        string ProfileType
+        string UpdatedColumn
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+
+    TBAccessToken {
+        string Id PK
+        string UserId FK
+        datetime ExpiresAt
+        datetime CreatedAt
+        datetime UpdatedAt
+        datetime DeletedAt
+    }
+
+    TBRefreshToken {
+        string Id PK
+        string UserId FK
+        datetime ExpiresAt
+        datetime CreatedAt
+        datetime UpdatedAt
+        datetime DeletedAt
+    }
+
+    TBMaterial {
+        string Id PK
+        string Name
+        string Description
+        string Color
+        datetime CreatedAt
+        datetime UpdatedAt
+        datetime DeletedAt
+        string CreatedBy
+        string UpdatedBy
+    }
+
+    TBCollectionPoint {
+        string Id PK
+        string CooperativeId FK
+        string Name
+        string Description
+        string ZipCode
+        string Address
+        string Number
+        string Complement
+        string Neighborhood
+        string City
+        string State
+        string Latitude
+        string Longitude
+        time OpeningTime
+        time ClosingTime
+        string Phone
+        datetime CreatedAt
+        datetime UpdatedAt
+        datetime DeletedAt
+        string CreatedBy
+        string UpdatedBy
+    }
+
+    TBCollectionPointMaterial {
+        string CollectionPointId FK
+        string MaterialId FK
+    }
+
+    TBCollect {
+        string Id PK
+        string CollectionPointId FK
+        string UserId FK
+        string MaterialId FK
+        decimal WeightKg
+        datetime CollectedAt
+        string Notes
+        datetime CreatedAt
+        datetime UpdatedAt
+        datetime DeletedAt
+        string CreatedBy
+        string UpdatedBy
+    }
+
+    TBUser ||--o{ TBUserSecurityInfo : "UserId"
+    TBUser ||--o{ TBAccessToken : "UserId"
+    TBUser ||--o{ TBRefreshToken : "UserId"
+    TBUser ||--o{ TBCollectionPoint : "CooperativeId"
+    TBUser ||--o{ TBCollect : "UserId"
+
+    TBCollectionPoint ||--o{ TBCollect : "CollectionPointId"
+    TBCollectionPoint ||--o{ TBCollectionPointMaterial : "CollectionPointId"
+
+    TBMaterial ||--o{ TBCollectionPointMaterial : "MaterialId"
+    TBMaterial ||--o{ TBCollect : "MaterialId"
+  </div>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      er: { layoutDirection: 'LR', minEntityWidth: 100, minEntityHeight: 75, entityPadding: 15, useMaxWidth: true }
+    });
+  </script>
+</body>
+</html>
