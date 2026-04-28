@@ -4,6 +4,7 @@ using API.Public.Filters;
 using API.Public.Validators;
 using Domain.Data.Entities;
 using Domain.Enumerators;
+using Domain.Exceptions;
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,17 @@ public class SaleController(ISaleService saleService) : _BaseController
     {
         var sales = await _service.GetByCooperativeAsync(Authenticated.User.Id, cancellationToken);
         return Ok(SaleResponseDTO.ModelToDTO(sales));
+    }
+
+    [HttpGet("{id}")]
+    [AuthAttribute]
+    [Filters.Authorize(ProfileType.COOPERATIVE, ProfileType.ADMIN)]
+    public async Task<IActionResult> GetById(string id, CancellationToken cancellationToken = default)
+    {
+        var sale = await _service.GetSaleByIdAsync(id, cancellationToken);
+        if (sale is null)
+            throw new BusinessException(BusinessErrorMessage.SALE_NOT_FOUND);
+        return Ok(new SaleResponseDTO(sale));
     }
 
     [HttpPost]

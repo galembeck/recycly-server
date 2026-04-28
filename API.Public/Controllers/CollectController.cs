@@ -4,6 +4,7 @@ using API.Public.Filters;
 using API.Public.Validators;
 using Domain.Data.Entities;
 using Domain.Enumerators;
+using Domain.Exceptions;
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,17 @@ public class CollectController(ICollectService collectService) : _BaseController
     {
         var collects = await _service.GetByUserAsync(Authenticated.User.Id, cancellationToken);
         return Ok(CollectResponseDTO.ModelToDTO(collects));
+    }
+
+    [HttpGet("{id}")]
+    [AuthAttribute]
+    [Filters.Authorize(ProfileType.COOPERATIVE, ProfileType.ADMIN)]
+    public async Task<IActionResult> GetById(string id, CancellationToken cancellationToken = default)
+    {
+        var collect = await _service.GetCollectByIdAsync(id, cancellationToken);
+        if (collect is null)
+            throw new BusinessException(BusinessErrorMessage.COLLECT_NOT_FOUND);
+        return Ok(new CollectResponseDTO(collect));
     }
 
     [HttpGet("cooperative")]

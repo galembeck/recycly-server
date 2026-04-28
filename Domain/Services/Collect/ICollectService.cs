@@ -9,6 +9,7 @@ public abstract class ICollectService : IService<Collect, ICollectRepository, Ba
 {
     public ICollectService(ICollectRepository repository) : base(repository) { }
 
+    public abstract Task<Collect?> GetCollectByIdAsync(string id, CancellationToken cancellationToken = default);
     public abstract Task<Collect> CreateCollectAsync(Collect collect, string actorId, CancellationToken cancellationToken = default);
     public abstract Task<List<Collect>> GetByUserAsync(string userId, CancellationToken cancellationToken = default);
     public abstract Task<List<Collect>> GetByCollectionPointAsync(string collectionPointId, CancellationToken cancellationToken = default);

@@ -13,6 +13,11 @@ public class CollectService(
     private readonly ICollectionPointRepository _collectionPointRepository = collectionPointRepository;
     private readonly IMaterialRepository _materialRepository = materialRepository;
 
+    public override async Task<Collect?> GetCollectByIdAsync(string id, CancellationToken cancellationToken = default)
+    {
+        return await _Repository.GetByIdWithDetailsAsync(id, cancellationToken);
+    }
+
     public override async Task<Collect> CreateCollectAsync(Collect collect, string actorId, CancellationToken cancellationToken = default)
     {
         var point = await _collectionPointRepository.GetWithMaterialsAsync(collect.CollectionPointId, cancellationToken);

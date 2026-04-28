@@ -7,6 +7,11 @@ namespace Domain.Services;
 
 public class SaleService(ISaleRepository repository) : ISaleService(repository)
 {
+    public override async Task<Sale?> GetSaleByIdAsync(string id, CancellationToken cancellationToken = default)
+    {
+        return await _Repository.GetWithMaterialsAsync(id, cancellationToken);
+    }
+
     public override async Task<List<Sale>> GetByCooperativeAsync(string cooperativeId, CancellationToken cancellationToken = default)
     {
         return await _Repository.GetByCooperativeAsync(cooperativeId, cancellationToken);

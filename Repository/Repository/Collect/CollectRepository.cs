@@ -10,6 +10,23 @@ public class CollectRepository : BaseRepository<Collect>, ICollectRepository
 {
     public CollectRepository(AppDbContext context) : base(context, context.Collects) { }
 
+    public async Task<Collect?> GetByIdWithDetailsAsync(string id, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            return await _entity
+                .Include(c => c.CollectionPoint)
+                .Include(c => c.Material)
+                .Where(c => c.Id == id && c.DeletedAt == null)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+        catch (Exception e)
+        {
+            throw new PersistenceException(e);
+        }
+    }
+
     public async Task<List<Collect>> GetByUserAsync(string userId, CancellationToken cancellationToken = default)
     {
         try
